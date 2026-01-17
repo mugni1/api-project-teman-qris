@@ -1,7 +1,7 @@
 import e from "express"
-import { sayHello } from "../controllers/index.controller.js"
+import { createItem } from "../controllers/item.controller.js"
 
 const router = e.Router()
-router.get("/", sayHello)
+router.post("/", createItem)
 
 export default router

@@ -4,6 +4,7 @@ import cors from "cors"
 import IndexRoute from "./routes/index.route.js"
 import AuthRoute from "./routes/auth.route.js"
 import ItemRoute from "./routes/item.route.js"
+import WebhookRoute from "./routes/webhook.route.js"
 
 // init
 const app = expess()
@@ -14,6 +15,7 @@ app.use(cors())
 app.use(IndexRoute)
 app.use("/auth", AuthRoute)
 app.use("/item", ItemRoute)
+app.use("/webhook", WebhookRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: "Route not found" }));
 
 // listen
