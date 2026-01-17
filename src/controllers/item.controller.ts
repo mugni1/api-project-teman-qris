@@ -1,7 +1,27 @@
 import { createItemSchema, updateItemSchema } from "../schema/item.schema.js"
-import { createItemService, deleteItemService, getItemById, updateItemService } from "../services/item.service.js"
+import { createItemService, deleteItemService, getItemById, getItemsService, updateItemService } from "../services/item.service.js"
+import { Meta } from "../types/meta.type.js"
 import { response } from "../utils/response.js"
 import { Request, Response } from "express"
+
+export const getItems = async (req: Request, res: Response) => {
+    const search = req.query.search?.toString() || "";
+    const limit = Number(req.query.limit) || 10;
+    const page = Number(req.query.page) || 1;
+    const offset = Number((page - 1) * limit);
+    const orderBy = req.query.orderBy?.toString() || "created_at";
+    const sortBy = req.query.sortBy?.toString() || "desc";
+    const meta: Meta = { limit, offset, page, search, orderBy, sortBy, total: 0 }
+    try {
+        const result = await getItemsService(meta)
+        if (!result) {
+            return response({ res, status: 400, message: "Failed get item" })
+        }
+        response({ res, status: 200, message: "Success get items", data: result })
+    } catch {
+        response({ res, status: 500, message: "Internal server error" })
+    }
+}
 
 export const createItem = async (req: Request, res: Response) => {
     const body = req.body
