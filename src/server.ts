@@ -1,15 +1,15 @@
-import expess, { Request, Response } from "express"
-import cors from "cors"
+import expess, { Response } from "express"
 import { response } from "./utils/response.js"
+import cors from "cors"
+import IndexRoute from "./routes/index.route.js"
 
 // init
 const app = expess()
 app.use(cors())
 
 // routes
-app.get("/", (_: Request, res: Response) => {
-    response({ res, message: "Hello World", status: 200 })
-})
+app.use(IndexRoute)
+app.use((_, res: Response) => response({ res, status: 404, message: "Route not found" }));
 
 // listen
 const HOST = "0.0.0.0"
