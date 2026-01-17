@@ -68,7 +68,7 @@ export const loginController = async (req: Request, res: Response) => {
                 user: isEmailExist
             }
         })
-    } catch {
-        response({ res, status: 500, message: "Internal server error" })
+    } catch (err: unknown) {
+        response({ res, status: 500, message: "Internal server error", errors: err })
     }
 }
