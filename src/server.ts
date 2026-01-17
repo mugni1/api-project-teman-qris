@@ -2,13 +2,16 @@ import expess, { Response } from "express"
 import { response } from "./utils/response.js"
 import cors from "cors"
 import IndexRoute from "./routes/index.route.js"
+import AuthRoute from "./routes/auth.route.js"
 
 // init
 const app = expess()
+app.use(expess.json())
 app.use(cors())
 
 // routes
 app.use(IndexRoute)
+app.use("/auth", AuthRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: "Route not found" }));
 
 // listen
