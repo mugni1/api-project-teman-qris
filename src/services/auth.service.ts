@@ -28,3 +28,10 @@ export const loginEmailExistService = async (email: string) => {
         where: { email },
     })
 }
+
+export const getUserByIdService = async (id: string) => {
+    return await prisma.user.findUnique({
+        where: { id },
+        omit: { password: true }
+    })
+}
