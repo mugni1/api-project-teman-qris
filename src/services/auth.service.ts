@@ -15,3 +15,9 @@ export const registerService = async (payload: RegisterPayload) => {
         }
     })
 }
+
+export const registerEmailExistService = async (email: string) => {
+    return await prisma.user.findUnique({
+        where: { email }
+    })
+}
