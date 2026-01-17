@@ -1,5 +1,5 @@
 import { createItemSchema, updateItemSchema } from "../schema/item.schema.js"
-import { createItemService, getItemById, updateItemService } from "../services/item.service.js"
+import { createItemService, deleteItemService, getItemById, updateItemService } from "../services/item.service.js"
 import { response } from "../utils/response.js"
 import { Request, Response } from "express"
 
@@ -48,6 +48,26 @@ export const updateItem = async (req: Request, res: Response) => {
             return response({ res, status: 400, message: "Failed update item" })
         }
         response({ res, status: 200, message: "Success update item", data: result })
+    } catch {
+        response({ res, status: 500, message: "Internal server error" })
+    }
+}
+
+export const deleteItem = async (req: Request, res: Response) => {
+    const id = req.params.id as string
+    if (!id) {
+        return response({ res, status: 400, message: "Parameter id is required" })
+    }
+    try {
+        const isExistItem = await getItemById(id)
+        if (!isExistItem) {
+            return response({ res, status: 404, message: "Item not found" })
+        }
+        const result = await deleteItemService(id)
+        if (!result) {
+            return response({ res, status: 400, message: "Failed delete item" })
+        }
+        response({ res, status: 200, message: "Success delete item", data: result })
     } catch {
         response({ res, status: 500, message: "Internal server error" })
     }

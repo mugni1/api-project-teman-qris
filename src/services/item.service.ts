@@ -24,6 +24,12 @@ export const updateItemService = async (payload: UpdateItemPayload, id: string) 
     })
 }
 
+export const deleteItemService = async (id: string) => {
+    return await prisma.item.delete({
+        where: { id }
+    })
+}
+
 export const getItemById = async (id: string) => {
     return await prisma.item.findUnique({
         where: { id }
