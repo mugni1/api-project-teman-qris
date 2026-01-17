@@ -7,6 +7,7 @@ export interface MyJwtPayload {
     lastname: string;
     fullname: string;
     email: string;
+    role: string
     iat: number;
     exp: number;
 }
@@ -19,6 +20,7 @@ export const generateToken = (payload: MyJwtPayload): string => {
         lastname: payload.lastname,
         fullname: payload.fullname,
         email: payload.email,
+        role: payload.role
     },
         JWT_SECRET_KEY, { expiresIn: '7d' }
     );

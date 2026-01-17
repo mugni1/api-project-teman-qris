@@ -7,14 +7,19 @@ datasource db {
   provider = "postgresql"
 }
 
+enum Role {
+  super_user
+  user
+}
 model User {
-  id          String  @id   @default(cuid())
-  firstname   String  @db.VarChar(20)
-  lastname    String? @db.VarChar(20)
-  fullname    String? @db.VarChar(40)
-  email       String  @unique
+  id          String   @id   @default(cuid())
+  firstname   String   @db.VarChar(20)
+  lastname    String?  @db.VarChar(20)
+  fullname    String?  @db.VarChar(40)
+  email       String   @unique
   password    String?
   provider    String?
+  role        Role     @default(user)
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 }
