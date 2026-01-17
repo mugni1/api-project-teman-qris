@@ -36,13 +36,14 @@ enum Provider {
 }
 
 model Item {
-  id         String   @id @default(cuid())
-  title      String   @db.VarChar(50)
-  price      Int
-  stock      Int
-  provider   Provider
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  id            String        @id @default(cuid())
+  title         String        @db.VarChar(50)
+  price         Int
+  stock         Int
+  provider      Provider
+  created_at    DateTime      @default(now())
+  updated_at    DateTime      @updatedAt
+  order_details OrderDetail[]
 }
 
 enum Status {
@@ -66,4 +67,6 @@ model OrderDetail {
   updated_at     DateTime @updatedAt
   user_id        String
   user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  item_id        String
+  item           Item     @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
