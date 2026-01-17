@@ -22,3 +22,9 @@ export const registerEmailExistService = async (email: string) => {
         omit: { password: true }
     })
 }
+
+export const loginEmailExistService = async (email: string) => {
+    return await prisma.user.findUnique({
+        where: { email },
+    })
+}

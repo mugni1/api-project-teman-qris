@@ -8,3 +8,9 @@ export const registerSchema = z.object({
     fullname: z.string("fullname is required").max(40, "maximum fullname must have 40 character").optional(),
 })
 export type RegisterPayload = z.infer<typeof registerSchema>;
+
+export const loginSchema = z.object({
+    email: z.email("invalid email"),
+    password: z.string("password is required").min(8, "minimum password must have 8 character").max(12, "maximum password must have 12 character"),
+})
+export type LoginPayload = z.infer<typeof loginSchema>;

@@ -8,8 +8,8 @@ export interface MyJwtPayload {
     fullname: string;
     email: string;
     role: string
-    iat: number;
-    exp: number;
+    iat?: number;
+    exp?: number;
 }
 const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY as string
 
