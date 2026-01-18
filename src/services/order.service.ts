@@ -15,3 +15,27 @@ export const createOrderService = async (payload: CreateOrderPayload, userId: st
         }
     })
 }
+
+export const getOrderByTransactionIdService = async (transaction_id: string) => {
+    return await prisma.orderDetail.findUnique({
+        where: {
+            transaction_id
+        }
+    })
+}
+
+export const updateOrderByTransactionIdService = async (
+    transaction_id: string,
+    status: "paid" | "expired" | "failed" | "cancelled" | "pending",
+    paidAt?: string
+) => {
+    return await prisma.orderDetail.update({
+        where: {
+            transaction_id
+        },
+        data: {
+            status,
+            paid_at: paidAt
+        }
+    })
+}
