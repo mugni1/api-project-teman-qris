@@ -22,7 +22,7 @@ export const handleWebhook = async (req: Request, res: Response) => {
 
     const updated = await updateOrderByTransactionIdService(body.transaction_id, body.status, body.paid_at)
     if (!updated) {
-        return response({ res, status: 404, message: 'Failed updated' })
+        return response({ res, status: 400, message: 'Failed updated' })
     }
 
     response({ res, status: 200, message: "Success handle webhooks", data: body })
