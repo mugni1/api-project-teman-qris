@@ -19,7 +19,7 @@ app.use(
       'http://192.168.43.161:5173',
       'http://192.168.43.160:5173',
     ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true,
   }),
