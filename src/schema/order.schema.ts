@@ -1,11 +1,14 @@
-import z from "zod"
+import z from 'zod'
 
 export const createOrderSchema = z.object({
-    transaction_id: z.string("transaction_id is required"),
-    amount: z.coerce.number("amount must be a number").min(0, "amount must be at least 0"),
-    qris_url: z.string("qris_url is required"),
-    qris_string: z.string("qris_string is required"),
-    expires_at: z.string("expires_at is required"),
-    item_id: z.cuid("item_id is required and please input valid item_id")
+  amount: z.coerce.number('amount must be a number').min(0, 'amount must be at least 0'),
+  item_id: z.cuid('item_id is required and please input valid item_id'),
+  customer_phone: z
+    .string('customer_phone is required')
+    .min(10, 'minimum customer_phone must be at least 10 characters')
+    .max(14, 'maximum customer_phone must be at least 14 characters'),
+  destination: z
+    .string('destination is required')
+    .min(10, 'minimum destination must be at least 10 characters')
+    .max(14, 'maximum destination must be at least 14 characters'),
 })
-export type CreateOrderPayload = z.infer<typeof createOrderSchema>;
