@@ -1,29 +1,41 @@
-import expess, { Response } from "express"
-import { response } from "./utils/response.js"
-import cors from "cors"
-import IndexRoute from "./routes/index.route.js"
-import AuthRoute from "./routes/auth.route.js"
-import ItemRoute from "./routes/item.route.js"
-import WebhookRoute from "./routes/webhook.route.js"
-import OrderRoute from "./routes/order.route.js"
+import expess, { Response } from 'express'
+import { response } from './utils/response.js'
+import cors from 'cors'
+import IndexRoute from './routes/index.route.js'
+import AuthRoute from './routes/auth.route.js'
+import ItemRoute from './routes/item.route.js'
+import WebhookRoute from './routes/webhook.route.js'
+import OrderRoute from './routes/order.route.js'
 
 // init
 const app = expess()
 app.use(expess.json())
-app.use(cors())
+app.use(
+  cors({
+    origin: [
+      'http://localhost:5173',
+      'https://pos.v2.mugni.my.id',
+      'https://app.v2.mugni.my.id',
+      'http://192.168.43.161:5173',
+      'http://192.168.43.160:5173',
+    ],
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+  }),
+)
 
 // routes
 app.use(IndexRoute)
-app.use("/auth", AuthRoute)
-app.use("/item", ItemRoute)
-app.use("/order", OrderRoute)
-app.use("/webhook", WebhookRoute)
-app.use((_, res: Response) => response({ res, status: 404, message: "Route not found" }));
+app.use('/auth', AuthRoute)
+app.use('/item', ItemRoute)
+app.use('/order', OrderRoute)
+app.use('/webhook', WebhookRoute)
+app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
 // listen
-const HOST = "0.0.0.0"
+const HOST = '0.0.0.0'
 const PORT = 5051
-app.listen(PORT, HOST, () => console.log("Server up and running on "))
+app.listen(PORT, HOST, () => console.log('Server up and running on '))
 
 export default app
-
