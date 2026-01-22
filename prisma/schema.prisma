@@ -33,6 +33,7 @@ enum Provider {
   byu
   smartfren
   indosat
+  three
 }
 
 model Item {
