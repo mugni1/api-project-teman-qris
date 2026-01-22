@@ -15,10 +15,23 @@ export const getItems = async (req: Request, res: Response) => {
   const limit = Number(req.query.limit) || 10
   const page = Number(req.query.page) || 1
   const offset = Number((page - 1) * limit)
-  const orderBy = req.query.orderBy?.toString() || 'created_at'
-  const sortBy = req.query.sortBy?.toString() || 'desc'
-  const filter = req.query.filter?.toString() || undefined
-  const meta: Meta = { limit, offset, page, search, orderBy, sortBy, filter, total: 0 }
+  const orderBy = req.query.order_by?.toString() || 'created_at'
+  const sortBy = req.query.sort_by?.toString() || 'desc'
+  const filterByStatus = req.query.filter_by_status?.toString() || undefined
+  const filterByCredit = req.query.filter_by_credit?.toString() || undefined
+  const filterByProvider = req.query.filter_by_provider?.toString() || undefined
+  const meta: Meta = {
+    limit,
+    offset,
+    page,
+    search,
+    filter_by_provider: filterByProvider,
+    filter_by_credit: filterByCredit,
+    filter_by_status: filterByStatus,
+    order_by: orderBy,
+    sort_by: sortBy,
+    total: 0,
+  }
   try {
     const result = await getItemsService(meta)
     if (!result) {

@@ -35,12 +35,22 @@ enum Provider {
   indosat
   three
 }
+enum TypeCredit {
+  credit
+  quota
+}
+enum TypeStatus {
+  promo
+  regular
+}
 
 model Item {
   id            String        @id @default(cuid())
   title         String        @db.VarChar(50)
   price         Int
   stock         Int
+  type_credit   TypeCredit
+  type_status   TypeStatus
   provider      Provider
   created_at    DateTime      @default(now())
   updated_at    DateTime      @updatedAt

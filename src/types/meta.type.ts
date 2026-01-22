@@ -4,7 +4,9 @@ export interface Meta {
   limit: number
   offset: number
   total: number
-  orderBy: string
-  sortBy: string | 'asc' | 'desc'
-  filter?: string
+  order_by: string
+  sort_by: string | 'asc' | 'desc'
+  filter_by_provider?: string
+  filter_by_credit?: string
+  filter_by_status?: string
 }

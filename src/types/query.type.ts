@@ -3,7 +3,9 @@ export interface QueryParams {
   limit: number
   page: number
   offset: number
-  orderBy: string
-  sortBy: string
-  filter?: string
+  order_by: string
+  sort_by: string
+  filter_by_provider?: string
+  filter_by_credit?: string
+  filter_by_status?: string
 }
