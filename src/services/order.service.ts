@@ -21,6 +21,7 @@ export const getOrderByTransactionIdService = async (transaction_id: string) => 
     where: {
       transaction_id,
     },
+    include: { user: true, item: true }
   })
 }
 
@@ -37,5 +38,12 @@ export const updateOrderByTransactionIdService = async (
       status,
       paid_at: paidAt,
     },
+  })
+}
+
+export const getOrderByIdService = async (id: string) => {
+  return await prisma.orderDetail.findUnique({
+    where: { id },
+    include: { user: true, item: true }
   })
 }
