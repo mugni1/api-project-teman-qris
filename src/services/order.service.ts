@@ -68,7 +68,7 @@ export const getOrderByIdService = async (id: string) => {
 export const updateOrderByTransactionIdService = async (
   transaction_id: string,
   status: 'paid' | 'expired' | 'failed' | 'cancelled' | 'pending',
-  paidAt?: string,
+  paidAt?: string | null,
 ) => {
   return await prisma.orderDetail.update({
     where: {

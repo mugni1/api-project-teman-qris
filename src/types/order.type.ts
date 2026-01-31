@@ -20,3 +20,14 @@ export interface CreateOrderPayload {
   item_id: string
   user_id: string
 }
+
+export interface GetPaymentQrisPWResponse {
+  success: boolean
+  transaction_id: string
+  order_id: null | string
+  amount: string
+  status: 'pending' | 'paid' | 'expired' | 'failed' | 'cancelled'
+  paid_at: null | string
+  expires_at: string
+  created_at: string
+}

@@ -1,9 +1,14 @@
 import { Request, Response } from 'express'
 import { response } from '../utils/response.js'
 import { createOrderSchema } from '../schema/order.schema.js'
-import { createOrderService, getOrderByIdService, getOrderByTransactionIdService } from '../services/order.service.js'
+import {
+  createOrderService,
+  getOrderByIdService,
+  getOrderByTransactionIdService,
+  updateOrderByTransactionIdService,
+} from '../services/order.service.js'
 import { getItemById } from '../services/item.service.js'
-import { CreatePaymentQrisPWRespose } from '../types/order.type.js'
+import { CreatePaymentQrisPWRespose, GetPaymentQrisPWResponse } from '../types/order.type.js'
 import axios, { AxiosResponse } from 'axios'
 
 export const createOrder = async (req: Request, res: Response) => {
@@ -83,6 +88,25 @@ export const getOrderById = async (req: Request, res: Response) => {
       return response({ res, status: 403, message: 'Cannot access this order detail' })
     }
     response({ res, status: 200, message: 'Success get order detail', data: orderDetail })
+  } catch {
+    response({ res, status: 500, message: 'Internal server error' })
+  }
+}
+
+export const updateOrderByTrxId = async (req: Request, res: Response) => {
+  const id = req.params.id as string
+  try {
+    const resQrisPw: AxiosResponse<GetPaymentQrisPWResponse> = await axios.get(
+      `https://qris.pw/api/check-payment.php?transaction_id=${id}`,
+      {
+        headers: {
+          'x-api-key': process.env.QRIS_PW_API_KEY,
+          'x-api-secret': process.env.QRIS_PW_SECRET_KEY,
+        },
+      },
+    )
+    const updated = await updateOrderByTransactionIdService(id, resQrisPw.data.status, resQrisPw.data.paid_at)
+    response({ res, status: 200, message: 'Success update', data: updated })
   } catch {
     response({ res, status: 500, message: 'Internal server error' })
   }
