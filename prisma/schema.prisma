@@ -69,6 +69,7 @@ model OrderDetail {
   id             String   @id @default(cuid())
   transaction_id String   @unique
   amount         Int
+  phone_number   String
   status         Status
   qris_url       String
   qris_string    String

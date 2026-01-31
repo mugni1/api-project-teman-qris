@@ -5,6 +5,7 @@ export const createOrderService = async (payload: CreateOrderPayload) => {
   return prisma.orderDetail.create({
     data: {
       transaction_id: payload.transaction_id,
+      phone_number: payload.phone_number,
       amount: payload.amount,
       status: 'pending',
       qris_url: payload.qris_url,
@@ -21,7 +22,7 @@ export const getOrderByTransactionIdService = async (transaction_id: string) => 
     where: {
       transaction_id,
     },
-    include: { user: true, item: true }
+    include: { user: true, item: true },
   })
 }
 
@@ -44,6 +45,6 @@ export const updateOrderByTransactionIdService = async (
 export const getOrderByIdService = async (id: string) => {
   return await prisma.orderDetail.findUnique({
     where: { id },
-    include: { user: true, item: true }
+    include: { user: true, item: true },
   })
 }

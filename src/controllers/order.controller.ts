@@ -44,6 +44,7 @@ export const createOrder = async (req: Request, res: Response) => {
 
     const result = await createOrderService({
       transaction_id: resQrisPw.data.transaction_id,
+      phone_number: data.customer_phone,
       qris_url: resQrisPw.data.qris_url,
       qris_string: resQrisPw.data.qris_string,
       created_at: resQrisPw.data.created_at,
@@ -71,7 +72,7 @@ export const getOrderById = async (req: Request, res: Response) => {
     if (!isExistOrderById) {
       const isExistOrderByTransactionId = await getOrderByTransactionIdService(id)
       if (!isExistOrderByTransactionId) {
-        return response({ res, status: 404, message: "Order detail not found" })
+        return response({ res, status: 404, message: 'Order detail not found' })
       } else {
         orderDetail = isExistOrderByTransactionId
       }
@@ -79,10 +80,10 @@ export const getOrderById = async (req: Request, res: Response) => {
       orderDetail = isExistOrderById
     }
     if (orderDetail.user_id != userId) {
-      return response({ res, status: 403, message: "Cannot access this order detail" })
+      return response({ res, status: 403, message: 'Cannot access this order detail' })
     }
-    response({ res, status: 200, message: "Success get order detail", data: orderDetail })
+    response({ res, status: 200, message: 'Success get order detail', data: orderDetail })
   } catch {
-    response({ res, status: 500, message: "Internal server error" })
+    response({ res, status: 500, message: 'Internal server error' })
   }
 }

@@ -11,6 +11,7 @@ export interface CreatePaymentQrisPWRespose {
 
 export interface CreateOrderPayload {
   transaction_id: string
+  phone_number: string
   amount: number
   qris_url: string
   qris_string: string
