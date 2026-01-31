@@ -22,7 +22,46 @@ export const getOrderByTransactionIdService = async (transaction_id: string) => 
     where: {
       transaction_id,
     },
-    include: { user: true, item: true },
+    include: {
+      user: {
+        omit: {
+          password: true,
+          provider: true,
+          role: true,
+          created_at: true,
+          updated_at: true,
+        },
+      },
+      item: {
+        omit: {
+          created_at: true,
+          updated_at: true,
+        },
+      },
+    },
+  })
+}
+
+export const getOrderByIdService = async (id: string) => {
+  return await prisma.orderDetail.findUnique({
+    where: { id },
+    include: {
+      user: {
+        omit: {
+          password: true,
+          provider: true,
+          role: true,
+          created_at: true,
+          updated_at: true,
+        },
+      },
+      item: {
+        omit: {
+          created_at: true,
+          updated_at: true,
+        },
+      },
+    },
   })
 }
 
@@ -39,12 +78,5 @@ export const updateOrderByTransactionIdService = async (
       status,
       paid_at: paidAt,
     },
-  })
-}
-
-export const getOrderByIdService = async (id: string) => {
-  return await prisma.orderDetail.findUnique({
-    where: { id },
-    include: { user: true, item: true },
   })
 }
