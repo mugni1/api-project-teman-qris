@@ -91,7 +91,11 @@ export const getOrderById = async (req: Request, res: Response) => {
       res,
       status: 200,
       message: 'Success get order detail',
-      data: { ...orderDetail, server_time: new Date().getTime() },
+      data: {
+        ...orderDetail,
+        server_time: new Date().getTime(),
+        expired_time: new Date(isExistOrderById?.expires_at || '').getTime(),
+      },
     })
   } catch {
     response({ res, status: 500, message: 'Internal server error' })
