@@ -1,7 +1,13 @@
 import 'dotenv/config'
 import { Request, Response } from 'express'
 import { response } from '../utils/response.js'
-import { loginEmailExistService, registerEmailExistService, registerService } from '../services/auth.service.js'
+import {
+  getUserByEmailService,
+  loginEmailExistService,
+  registerAuthGoogleService,
+  registerEmailExistService,
+  registerService,
+} from '../services/auth.service.js'
 import { loginSchema, registerSchema } from '../schema/auth.schema.js'
 import { comparePassword, hashedPassword } from '../utils/bcrypt.js'
 import { generateToken } from '../utils/jwt.js'
@@ -96,10 +102,48 @@ export const googleCallback = async (req: Request, res: Response) => {
       version: 'v2',
     })
     const { data: userInfo } = await oauth2.userinfo.get()
-    res.redirect(
-      `${process.env.FE_ORIGIN_URL}?email=${userInfo.email}&avatar=${userInfo.picture}&name=${userInfo.name}&provider=google`,
-    )
+
+    // checking
+    if (userInfo) {
+      const existUser = await getUserByEmailService(userInfo.email as string)
+      if (existUser) {
+        if (existUser.provider != 'google') {
+          return res.redirect(
+            `${process.env.FE_ORIGIN_URL}/login?message=akun_sudah_terdaftar_dengan_metode_login_lain`,
+          )
+        } else {
+          const token = generateToken({
+            id: existUser.id,
+            email: existUser.email,
+            role: existUser.role,
+            firstname: existUser.firstname,
+            lastname: existUser.lastname || '',
+            fullname: existUser.fullname || '',
+          })
+          const hashToken = btoa(token)
+          return res.redirect(`${process.env.FE_ORIGIN_URL}?message=success_login&bb=${hashToken}`)
+        }
+      }
+      const registered = await registerAuthGoogleService({
+        email: userInfo.email as string,
+        firstname: userInfo.given_name as string,
+        lastname: userInfo.family_name as string,
+        fullname: userInfo.name as string,
+      })
+      const token = generateToken({
+        id: registered.id,
+        email: registered.email,
+        role: registered.role,
+        firstname: registered.firstname,
+        lastname: registered.lastname || '',
+        fullname: registered.fullname || '',
+      })
+      const hashToken = btoa(token)
+      return res.redirect(`${process.env.FE_ORIGIN_URL}?message=success_login&bb=${hashToken}`)
+    } else {
+      res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=try_again_later`)
+    }
   } catch {
-    res.status(500).send('Something went wrong')
+    res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=try_again_later`)
   }
 }
