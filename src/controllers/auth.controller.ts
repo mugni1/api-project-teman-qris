@@ -119,7 +119,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             fullname: existUser.fullname || '',
           })
           const hashToken = btoa(token)
-          return res.redirect(`${process.env.FE_ORIGIN_URL}?message=Berhasil_masuk&bb=${hashToken}`)
+          return res.redirect(`${process.env.FE_ORIGIN_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
         }
       }
       const registered = await registerAuthGoogleService({
@@ -137,7 +137,7 @@ export const googleCallback = async (req: Request, res: Response) => {
         fullname: registered.fullname || '',
       })
       const hashToken = btoa(token)
-      return res.redirect(`${process.env.FE_ORIGIN_URL}?message=Berhasil_masuk&bb=${hashToken}`)
+      return res.redirect(`${process.env.FE_ORIGIN_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
     } else {
       res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Coba_lagi_nanti`)
     }
