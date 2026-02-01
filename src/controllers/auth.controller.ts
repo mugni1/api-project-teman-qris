@@ -108,9 +108,7 @@ export const googleCallback = async (req: Request, res: Response) => {
       const existUser = await getUserByEmailService(userInfo.email as string)
       if (existUser) {
         if (existUser.provider != 'google') {
-          return res.redirect(
-            `${process.env.FE_ORIGIN_URL}/login?message=akun_sudah_terdaftar_dengan_metode_login_lain`,
-          )
+          return res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Akun_sudah_terdaftar`)
         } else {
           const token = generateToken({
             id: existUser.id,
@@ -121,7 +119,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             fullname: existUser.fullname || '',
           })
           const hashToken = btoa(token)
-          return res.redirect(`${process.env.FE_ORIGIN_URL}?message=success_login&bb=${hashToken}`)
+          return res.redirect(`${process.env.FE_ORIGIN_URL}?message=Berhasil_masuk&bb=${hashToken}`)
         }
       }
       const registered = await registerAuthGoogleService({
@@ -139,11 +137,11 @@ export const googleCallback = async (req: Request, res: Response) => {
         fullname: registered.fullname || '',
       })
       const hashToken = btoa(token)
-      return res.redirect(`${process.env.FE_ORIGIN_URL}?message=success_login&bb=${hashToken}`)
+      return res.redirect(`${process.env.FE_ORIGIN_URL}?message=Berhasil_masuk&bb=${hashToken}`)
     } else {
-      res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=try_again_later`)
+      res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Coba_lagi_nanti`)
     }
   } catch {
-    res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=try_again_later`)
+    res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Coba_lagi_nanti`)
   }
 }
