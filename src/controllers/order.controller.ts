@@ -87,7 +87,12 @@ export const getOrderById = async (req: Request, res: Response) => {
     if (orderDetail.user_id != userId) {
       return response({ res, status: 403, message: 'Cannot access this order detail' })
     }
-    response({ res, status: 200, message: 'Success get order detail', data: orderDetail })
+    response({
+      res,
+      status: 200,
+      message: 'Success get order detail',
+      data: { ...orderDetail, server_time: new Date().getTime() },
+    })
   } catch {
     response({ res, status: 500, message: 'Internal server error' })
   }
