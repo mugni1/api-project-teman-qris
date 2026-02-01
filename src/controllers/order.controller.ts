@@ -53,7 +53,7 @@ export const createOrder = async (req: Request, res: Response) => {
       qris_url: resQrisPw.data.qris_url,
       qris_string: resQrisPw.data.qris_string,
       created_at: resQrisPw.data.created_at,
-      expires_at: resQrisPw.data.expires_at,
+      expires_at: new Date(Date.now() + 10 * 60 * 1000).toISOString(),
       user_id: userId,
       amount: resQrisPw.data.amount,
       item_id: isExistItem.id,
