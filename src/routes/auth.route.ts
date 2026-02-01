@@ -4,7 +4,7 @@ import { googleCallback, googleRedirect, loginController, registerController } f
 const router = e.Router()
 router.post('/register', registerController)
 router.post('/login', loginController)
-router.get('/auth/google', googleRedirect)
-router.get('/auth/google/callback', googleCallback)
+router.get('/google', googleRedirect)
+router.get('/google/callback', googleCallback)
 
 export default router
