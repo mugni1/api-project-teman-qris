@@ -3,6 +3,7 @@ import { Request, Response } from 'express'
 import { response } from '../utils/response.js'
 import {
   getUserByEmailService,
+  getUserByIdService,
   loginEmailExistService,
   registerAuthGoogleService,
   registerEmailExistService,
@@ -13,6 +14,16 @@ import { comparePassword, hashedPassword } from '../utils/bcrypt.js'
 import { generateToken } from '../utils/jwt.js'
 import { authClient, authGoogleUrl } from '../libs/oauth.js'
 import { google } from 'googleapis'
+
+export const me = async (req: Request, res: Response) => {
+  const userId = req.user_id as string
+  try {
+    const data = await getUserByIdService(userId)
+    response({ res, status: 200, message: 'Success get user', data })
+  } catch {
+    response({ res, status: 500, message: 'Internal server error' })
+  }
+}
 
 export const registerController = async (req: Request, res: Response) => {
   const body = req.body
@@ -122,12 +133,15 @@ export const googleCallback = async (req: Request, res: Response) => {
           return res.redirect(`${process.env.FE_ORIGIN_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
         }
       }
-      const registered = await registerAuthGoogleService({
-        email: userInfo.email as string,
-        firstname: userInfo.given_name as string,
-        lastname: userInfo.family_name as string,
-        fullname: userInfo.name as string,
-      })
+      const registered = await registerAuthGoogleService(
+        {
+          email: userInfo.email as string,
+          firstname: userInfo.given_name as string,
+          lastname: userInfo.family_name as string,
+          fullname: userInfo.name as string,
+        },
+        userInfo.picture as string,
+      )
       const token = generateToken({
         id: registered.id,
         email: registered.email,
