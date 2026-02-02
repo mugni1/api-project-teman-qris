@@ -1,5 +1,6 @@
 import { prisma } from '../libs/prisma.js'
 import { CreateOrderPayload } from '../types/order.type.js'
+import { QueryParams } from '../types/query.type.js'
 
 export const createOrderService = async (payload: CreateOrderPayload) => {
   return prisma.orderDetail.create({
@@ -77,6 +78,29 @@ export const updateOrderByTransactionIdService = async (
     data: {
       status,
       paid_at: paidAt,
+    },
+  })
+}
+
+export const getOrderByUserLoginService = async (params: QueryParams, id: string) => {
+  return await prisma.orderDetail.findMany({
+    where: {
+      AND: [{ user_id: id }, { transaction_id: { mode: 'insensitive', contains: params.search } }],
+    },
+    orderBy: {
+      [params.order_by]: params.sort_by,
+    },
+    skip: params.offset,
+    take: params.limit,
+    include: { item: { select: { title: true, provider: true } } },
+    omit: { qris_string: true, qris_url: true, updated_at: true, user_id: true },
+  })
+}
+
+export const countOrderByUserLoginService = async (params: QueryParams, id: string) => {
+  return await prisma.orderDetail.count({
+    where: {
+      AND: [{ user_id: id }, { transaction_id: { mode: 'insensitive', contains: params.search } }],
     },
   })
 }

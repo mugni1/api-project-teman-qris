@@ -2,14 +2,17 @@ import { Request, Response } from 'express'
 import { response } from '../utils/response.js'
 import { createOrderSchema } from '../schema/order.schema.js'
 import {
+  countOrderByUserLoginService,
   createOrderService,
   getOrderByIdService,
   getOrderByTransactionIdService,
+  getOrderByUserLoginService,
   updateOrderByTransactionIdService,
 } from '../services/order.service.js'
 import { getItemById } from '../services/item.service.js'
 import { CreatePaymentQrisPWRespose, GetPaymentQrisPWResponse } from '../types/order.type.js'
 import axios, { AxiosResponse } from 'axios'
+import { Meta } from '../types/meta.type.js'
 
 export const createOrder = async (req: Request, res: Response) => {
   const userId = req.user_id as string
@@ -116,6 +119,25 @@ export const updateOrderByTrxId = async (req: Request, res: Response) => {
     )
     const updated = await updateOrderByTransactionIdService(id, resQrisPw.data.status, resQrisPw.data.paid_at)
     response({ res, status: 200, message: 'Success update', data: updated })
+  } catch {
+    response({ res, status: 500, message: 'Internal server error' })
+  }
+}
+
+export const getOrders = async (req: Request, res: Response) => {
+  const user_id = req.user_id as string
+  const search = req.query.search?.toString() || ''
+  const limit = Number(req.query.limit) || 10
+  const page = Number(req.query.page) || 1
+  const offset = Number((page - 1) * limit)
+  const order_by = req.query.order_by?.toString() || 'created_at'
+  const sort_by = req.query.sort_by?.toString() || 'desc'
+  const meta: Meta = { limit, offset, page, search, order_by, sort_by, total: 0 }
+
+  try {
+    const data = await getOrderByUserLoginService(meta, user_id)
+    meta.total = await countOrderByUserLoginService(meta, user_id)
+    response({ res, status: 200, message: 'Succes get orders', data, meta })
   } catch {
     response({ res, status: 500, message: 'Internal server error' })
   }
