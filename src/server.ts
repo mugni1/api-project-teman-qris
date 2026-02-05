@@ -6,6 +6,7 @@ import AuthRoute from './routes/auth.route.js'
 import ItemRoute from './routes/item.route.js'
 import WebhookRoute from './routes/webhook.route.js'
 import OrderRoute from './routes/order.route.js'
+import NewsRoute from './routes/news.route.js'
 
 // init
 const app = expess()
@@ -31,6 +32,7 @@ app.use('/auth', AuthRoute)
 app.use('/item', ItemRoute)
 app.use('/order', OrderRoute)
 app.use('/webhook', WebhookRoute)
+app.use('/news', NewsRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
 // listen

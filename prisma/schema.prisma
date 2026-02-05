@@ -36,10 +36,12 @@ enum Provider {
   indosat
   three
 }
+
 enum TypeCredit {
   credit
   quota
 }
+
 enum TypeStatus {
   promo
   regular
@@ -82,4 +84,12 @@ model OrderDetail {
   user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
   item_id        String
   item           Item     @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model News {
+  id         String   @id @default(cuid())
+  title      String
+  content    String   @db.Text
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
 }
