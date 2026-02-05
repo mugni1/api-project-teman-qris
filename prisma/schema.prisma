@@ -88,6 +88,7 @@ model OrderDetail {
 
 model News {
   id         String   @id @default(cuid())
+  image_url  String   @db.Text
   title      String
   content    String   @db.Text
   created_at DateTime @default(now())
