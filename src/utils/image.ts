@@ -1,7 +1,7 @@
 import fileUpload from 'express-fileupload'
 import { response } from './response.js'
 import { Response } from 'express'
-import cloudinary from '../libs/cloudinary.js'
+import { imageKit } from '../libs/imagekit.js'
 
 export const imageValidateAndUpload = async (image: fileUpload.UploadedFile, res: Response) => {
   if (!image) {
@@ -13,15 +13,11 @@ export const imageValidateAndUpload = async (image: fileUpload.UploadedFile, res
   if (!image.mimetype.startsWith('image')) {
     return response({ res, message: 'Please input valid image', status: 400 })
   }
-
   try {
-    const result = await new Promise<any>((resolve, reject) => {
-      cloudinary.uploader
-        .upload_stream({ folder: 'item/images' }, (error, result) => {
-          if (error) reject(error)
-          else resolve(result)
-        })
-        .end(image.data)
+    const result = await imageKit.upload({
+      file: image.data,
+      fileName: image.name,
+      folder: '/uploads',
     })
     return result
   } catch (errors) {

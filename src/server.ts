@@ -8,6 +8,7 @@ import ItemRoute from './routes/item.route.js'
 import WebhookRoute from './routes/webhook.route.js'
 import OrderRoute from './routes/order.route.js'
 import NewsRoute from './routes/news.route.js'
+import StorageRoute from './routes/upload.route.js'
 
 // init
 const app = expess()
@@ -15,6 +16,8 @@ app.use(expess.json())
 app.use(
   fileUpload({
     limits: { fileSize: 4 * 1024 * 1024 },
+    abortOnLimit: true,
+    createParentPath: true,
   }),
 )
 app.use(
@@ -39,6 +42,7 @@ app.use('/item', ItemRoute)
 app.use('/order', OrderRoute)
 app.use('/webhook', WebhookRoute)
 app.use('/news', NewsRoute)
+app.use('/upload', StorageRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
 // listen
