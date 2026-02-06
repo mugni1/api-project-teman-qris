@@ -1,4 +1,5 @@
 import expess, { Response } from 'express'
+import fileUpload from 'express-fileupload'
 import { response } from './utils/response.js'
 import cors from 'cors'
 import IndexRoute from './routes/index.route.js'
@@ -11,6 +12,11 @@ import NewsRoute from './routes/news.route.js'
 // init
 const app = expess()
 app.use(expess.json())
+app.use(
+  fileUpload({
+    limits: { fileSize: 4 * 1024 * 1024 },
+  }),
+)
 app.use(
   cors({
     origin: [
