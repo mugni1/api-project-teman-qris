@@ -24,6 +24,7 @@ app.use(
   cors({
     origin: [
       'http://localhost:5173',
+      'http://localhost:3000',
       'https://pos.v2.mugni.my.id',
       'https://app.v2.mugni.my.id',
       'http://192.168.43.161:5173',
