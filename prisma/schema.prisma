@@ -27,37 +27,19 @@ model User {
   order_details OrderDetail[]
 }
 
-enum Provider {
-  xl
-  axis
-  telkomsel
-  byu
-  smartfren
-  indosat
-  three
-}
-
-enum TypeCredit {
-  credit
-  quota
-}
-
-enum TypeStatus {
-  promo
-  regular
-}
-
 model Item {
-  id            String        @id @default(cuid())
-  title         String        @db.VarChar(50)
-  price         Int
-  stock         Int
-  type_credit   TypeCredit
-  type_status   TypeStatus
-  provider      Provider
-  created_at    DateTime      @default(now())
-  updated_at    DateTime      @updatedAt
-  order_details OrderDetail[]
+  id              String        @id @default(cuid())
+  title           String        @db.VarChar(50)
+  price           Int
+  stock           Int
+  unlimited_stock Boolean
+  seller_name     String
+  sku_code        String
+  created_at      DateTime      @default(now())
+  updated_at      DateTime      @updatedAt
+  order_details   OrderDetail[]
+  category_id     String
+  category        Category      @relation(fields: [category_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 enum Status {
@@ -93,4 +75,22 @@ model News {
   content    String   @db.Text
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+}
+
+enum Type {
+  credit
+  quota
+  games
+  bill
+}
+
+model Category {
+  id         String   @id @default(cuid())
+  title      String
+  image_url  String
+  cover_url  String
+  type       Type
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  items      Item[]
 }
