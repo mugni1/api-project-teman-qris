@@ -7,10 +7,11 @@ export const createItemService = async (payload: CreateItemPayload) => {
     data: {
       title: payload.title,
       price: payload.price,
-      provider: payload.provider,
       stock: payload.stock,
-      type_credit: payload.type_credit,
-      type_status: payload.type_status,
+      unlimited_stock: payload.unlimited_stock,
+      sku_code: payload.sku_code,
+      seller_name: payload.seller_name,
+      category_id: payload.category_id,
     },
   })
 }
@@ -21,10 +22,11 @@ export const updateItemService = async (payload: UpdateItemPayload, id: string) 
     data: {
       title: payload.title,
       price: payload.price,
-      provider: payload.provider,
       stock: payload.stock,
-      type_credit: payload.type_credit,
-      type_status: payload.type_status,
+      unlimited_stock: payload.unlimited_stock,
+      sku_code: payload.sku_code,
+      seller_name: payload.seller_name,
+      category_id: payload.category_id,
     },
   })
 }
@@ -41,9 +43,6 @@ export const getItemsService = async (params: QueryParams) => {
       AND: [
         {
           title: { contains: params.search, mode: 'insensitive' },
-          provider: params.filter_by_provider as 'axis' | 'xl' | 'indosat' | 'telkomsel' | 'smartfren' | 'byu',
-          type_credit: params.filter_by_credit as 'credit' | 'quota',
-          type_status: params.filter_by_status as 'regular' | 'promo',
         },
       ],
     },

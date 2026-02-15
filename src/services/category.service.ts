@@ -43,10 +43,7 @@ export const getCategoriesService = async (params: QueryParams) => {
 
   return await prisma.category.findMany({
     where: {
-      OR: [
-        { title: { contains: params.search, mode: 'insensitive' } },
-        ...(typeSearch ? [{ type: typeSearch }] : []),
-      ],
+      OR: [{ title: { contains: params.search, mode: 'insensitive' } }, ...(typeSearch ? [{ type: typeSearch }] : [])],
     },
     orderBy: {
       [params.order_by]: params.sort_by,
@@ -64,10 +61,7 @@ export const countCategoriesService = async (params: QueryParams) => {
 
   return await prisma.category.count({
     where: {
-      OR: [
-        { title: { contains: params.search, mode: 'insensitive' } },
-        ...(typeSearch ? [{ type: typeSearch }] : []),
-      ],
+      OR: [{ title: { contains: params.search, mode: 'insensitive' } }, ...(typeSearch ? [{ type: typeSearch }] : [])],
     },
   })
 }

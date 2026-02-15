@@ -1,4 +1,5 @@
 import { createItemSchema, updateItemSchema } from '../schema/item.schema.js'
+import { getCategoryByIdService } from '../services/category.service.js'
 import {
   createItemService,
   deleteItemService,
@@ -15,23 +16,9 @@ export const getItems = async (req: Request, res: Response) => {
   const limit = Number(req.query.limit) || 10
   const page = Number(req.query.page) || 1
   const offset = Number((page - 1) * limit)
-  const orderBy = req.query.order_by?.toString() || 'created_at'
-  const sortBy = req.query.sort_by?.toString() || 'desc'
-  const filterByStatus = req.query.filter_by_status?.toString() || undefined
-  const filterByCredit = req.query.filter_by_credit?.toString() || undefined
-  const filterByProvider = req.query.filter_by_provider?.toString() || undefined
-  const meta: Meta = {
-    limit,
-    offset,
-    page,
-    search,
-    filter_by_provider: filterByProvider,
-    filter_by_credit: filterByCredit,
-    filter_by_status: filterByStatus,
-    order_by: orderBy,
-    sort_by: sortBy,
-    total: 0,
-  }
+  const order_by = req.query.order_by?.toString() || 'created_at'
+  const sort_by = req.query.sort_by?.toString() || 'desc'
+  const meta: Meta = { limit, offset, page, search, order_by, sort_by, total: 0 }
   try {
     const result = await getItemsService(meta)
     if (!result) {
@@ -54,6 +41,10 @@ export const createItem = async (req: Request, res: Response) => {
     return response({ res, status: 400, message: 'Invalid input', errors })
   }
   try {
+    const isExistCategory = await getCategoryByIdService(data.category_id)
+    if (!isExistCategory) {
+      return response({ res, status: 404, message: 'Category not found' })
+    }
     const result = await createItemService(data)
     if (!result) {
       return response({ res, status: 400, message: 'Failed create item' })
@@ -79,6 +70,12 @@ export const updateItem = async (req: Request, res: Response) => {
     return response({ res, status: 400, message: 'Invalid input', errors })
   }
   try {
+    if (data.category_id) {
+      const isExistCategory = await getCategoryByIdService(data.category_id)
+      if (!isExistCategory) {
+        return response({ res, status: 404, message: 'Category not found' })
+      }
+    }
     const isExistItem = await getItemById(id)
     if (!isExistItem) {
       return response({ res, status: 404, message: 'Item not found' })

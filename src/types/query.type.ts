@@ -5,7 +5,4 @@ export interface QueryParams {
   offset: number
   order_by: string
   sort_by: string
-  filter_by_provider?: string
-  filter_by_credit?: string
-  filter_by_status?: string
 }
