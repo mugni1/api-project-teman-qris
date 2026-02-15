@@ -6,6 +6,7 @@ export const createItemService = async (payload: CreateItemPayload) => {
   return await prisma.item.create({
     data: {
       title: payload.title,
+      image_url: payload.image_url,
       price: payload.price,
       stock: payload.stock,
       unlimited_stock: payload.unlimited_stock,
@@ -21,6 +22,7 @@ export const updateItemService = async (payload: UpdateItemPayload, id: string) 
     where: { id },
     data: {
       title: payload.title,
+      image_url: payload.image_url,
       price: payload.price,
       stock: payload.stock,
       unlimited_stock: payload.unlimited_stock,
