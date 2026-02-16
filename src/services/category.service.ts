@@ -10,9 +10,14 @@ export const createCategoryService = async (payload: CreateCategoryPayload) => {
   return await prisma.category.create({
     data: {
       title: payload.title,
+      studio: payload.studio,
       image_url: payload.image_url,
       cover_url: payload.cover_url,
       type: payload.type,
+      column_1: payload.column_1,
+      column_2: payload.column_2,
+      column_1_title: payload.column_1_title,
+      column_2_title: payload.column_2_title,
     },
   })
 }
@@ -22,9 +27,14 @@ export const updateCategoryService = async (payload: UpdateCategoryPayload, id: 
     where: { id },
     data: {
       title: payload.title,
+      studio: payload.studio,
       image_url: payload.image_url,
       cover_url: payload.cover_url,
       type: payload.type,
+      column_1: payload.column_1,
+      column_2: payload.column_2,
+      column_1_title: payload.column_1_title,
+      column_2_title: payload.column_2_title,
     },
   })
 }

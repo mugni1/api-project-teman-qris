@@ -86,12 +86,17 @@ enum Type {
 }
 
 model Category {
-  id         String   @id @default(cuid())
-  title      String
-  image_url  String
-  cover_url  String
-  type       Type
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  items      Item[]
+  id             String   @id @default(cuid())
+  title          String
+  studio         String
+  image_url      String
+  cover_url      String
+  column_1       Boolean  @default(true)
+  column_2       Boolean
+  column_1_title String
+  column_2_title String
+  type           Type
+  created_at     DateTime @default(now())
+  updated_at     DateTime @updatedAt
+  items          Item[]
 }
