@@ -38,6 +38,16 @@ export const getOrderByTransactionIdService = async (transaction_id: string) => 
           created_at: true,
           updated_at: true,
         },
+        include: {
+          category: {
+            select: {
+              column_1_title: true,
+              image_url: true,
+              title: true,
+              studio: true,
+            },
+          },
+        },
       },
     },
   })
@@ -60,6 +70,16 @@ export const getOrderByIdService = async (id: string) => {
         omit: {
           created_at: true,
           updated_at: true,
+        },
+        include: {
+          category: {
+            select: {
+              column_1_title: true,
+              image_url: true,
+              title: true,
+              studio: true,
+            },
+          },
         },
       },
     },
