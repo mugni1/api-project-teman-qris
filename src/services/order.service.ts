@@ -112,7 +112,28 @@ export const getOrderByUserLoginService = async (params: QueryParams, id: string
     },
     skip: params.offset,
     take: params.limit,
-    include: { item: { select: { title: true } } },
+    include: {
+      item: {
+        omit: {
+          stock: true,
+          image_url: true,
+          seller_name: true,
+          price: true,
+          sku_code: true,
+          created_at: true,
+          updated_at: true,
+          unlimited_stock: true,
+        },
+        include: {
+          category: {
+            select: {
+              image_url: true,
+              title: true,
+            },
+          },
+        },
+      },
+    },
     omit: { qris_string: true, qris_url: true, updated_at: true, user_id: true },
   })
 }
