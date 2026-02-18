@@ -36,7 +36,6 @@ export const createOrder = async (req: Request, res: Response) => {
       'https://qris.pw/api/create-payment.php',
       {
         amount: isExistItem.price,
-        customer_phone: data.customer_phone,
         callback_url: 'https://api.v2.mugni.my.id/webhook',
       },
       {
@@ -52,7 +51,7 @@ export const createOrder = async (req: Request, res: Response) => {
 
     const result = await createOrderService({
       transaction_id: resQrisPw.data.transaction_id,
-      phone_number: data.customer_phone,
+      destination: data.destination,
       qris_url: resQrisPw.data.qris_url,
       qris_string: resQrisPw.data.qris_string,
       created_at: resQrisPw.data.created_at,

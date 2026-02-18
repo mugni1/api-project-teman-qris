@@ -6,7 +6,7 @@ export const createOrderService = async (payload: CreateOrderPayload) => {
   return prisma.orderDetail.create({
     data: {
       transaction_id: payload.transaction_id,
-      phone_number: payload.phone_number,
+      destination: payload.destination,
       amount: payload.amount,
       status: 'pending',
       qris_url: payload.qris_url,
