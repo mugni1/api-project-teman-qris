@@ -7,6 +7,7 @@ import {
   getOrderByIdService,
   getOrderByTransactionIdService,
   getOrderByUserLoginService,
+  isExistOrderPendingService,
   updateOrderByTransactionIdService,
 } from '../services/order.service.js'
 import { getItemById } from '../services/item.service.js'
@@ -18,18 +19,27 @@ export const createOrder = async (req: Request, res: Response) => {
   const userId = req.user_id as string
   const body = req.body
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Harap lengkapi semua data dengan benar.' })
   }
   const { success, error, data } = createOrderSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Harap lengkapi semua data dengan benar.', errors })
   }
 
   try {
+    const isExistOrderPending = await isExistOrderPendingService(userId)
+    if (isExistOrderPending) {
+      return response({ res, status: 400, message: 'Harap selesaikan pembayaran ditransaksi sebelumnya.' })
+    }
+
     const isExistItem = await getItemById(data.item_id)
     if (!isExistItem) {
-      return response({ res, status: 404, message: 'Failed create order item not found' })
+      return response({
+        res,
+        status: 404,
+        message: 'Gagal membuat transaksi, dikarenakan item yang di pilih tidak tersedia.',
+      })
     }
 
     const resQrisPw: AxiosResponse<CreatePaymentQrisPWRespose> = await axios.post(
@@ -46,7 +56,7 @@ export const createOrder = async (req: Request, res: Response) => {
       },
     )
     if (!resQrisPw.data.success || !resQrisPw) {
-      return response({ res, status: 404, message: 'Failed create order, try again later' })
+      return response({ res, status: 404, message: 'Gagal membuat transaksi, coba lagi nanti.' })
     }
 
     const result = await createOrderService({
@@ -61,11 +71,11 @@ export const createOrder = async (req: Request, res: Response) => {
       item_id: isExistItem.id,
     })
     if (!result) {
-      return response({ res, status: 400, message: 'Failed create order, try again later' })
+      return response({ res, status: 400, message: 'Gagal membuat transaksi, coba lagi nanti.' })
     }
-    response({ res, status: 201, message: 'Success create order', data: result })
+    response({ res, status: 201, message: 'Berhasil membuat transaksi, silahkan lakukan pembayaran.', data: result })
   } catch (err: unknown) {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
   }
 }
 

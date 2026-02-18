@@ -18,6 +18,12 @@ export const createOrderService = async (payload: CreateOrderPayload) => {
   })
 }
 
+export const isExistOrderPendingService = async (userId: string) => {
+  return prisma.orderDetail.findFirst({
+    where: { AND: { user_id: userId, status: 'pending' } },
+  })
+}
+
 export const getOrderByTransactionIdService = async (transaction_id: string) => {
   return await prisma.orderDetail.findUnique({
     where: {
