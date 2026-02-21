@@ -54,7 +54,7 @@ app.use((_, res: Response) => response({ res, status: 404, message: 'Route not f
 
 // listen
 const HOST = '0.0.0.0'
-const PORT = 5051
+const PORT = 5055
 app.listen(PORT, HOST, () => console.log(`Server running on http://${HOST}:${PORT}`))
 
 export default app

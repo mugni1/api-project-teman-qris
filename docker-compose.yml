@@ -1,0 +1,9 @@
+services:
+  app:
+    build: .
+    container_name: api_project_teman_qris
+    ports:
+      - '5055:5055'
+    env_file:
+      - .env
+    restart: always
