@@ -10,6 +10,7 @@ import OrderRoute from './routes/order.route.js'
 import NewsRoute from './routes/news.route.js'
 import StorageRoute from './routes/upload.route.js'
 import DigiflazzRoute from './routes/digiflazz.route.js'
+import VipRoute from './routes/vip.route.js'
 import CategoryRoute from './routes/category.route.js'
 
 // init
@@ -47,6 +48,7 @@ app.use('/webhook', WebhookRoute)
 app.use('/news', NewsRoute)
 app.use('/upload', StorageRoute)
 app.use('/digiflazz', DigiflazzRoute)
+app.use('/vip', VipRoute)
 app.use('/category', CategoryRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
