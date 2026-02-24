@@ -46,6 +46,8 @@ model Item {
 enum Status {
   pending
   paid
+  success
+  waiting
   expired
   failed
   cancelled
