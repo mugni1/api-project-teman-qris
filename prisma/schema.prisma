@@ -52,21 +52,22 @@ enum Status {
 }
 
 model OrderDetail {
-  id             String   @id @default(cuid())
-  transaction_id String   @unique
-  amount         Int
-  destination    String
-  status         Status
-  qris_url       String
-  qris_string    String
-  expires_at     String
-  paid_at        String?
-  created_at     DateTime @default(now())
-  updated_at     DateTime @updatedAt
-  user_id        String
-  user           User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  item_id        String
-  item           Item     @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id                 String   @id @default(cuid())
+  transaction_id     String   @unique
+  amount             Int
+  destination        String
+  destination_second String?
+  status             Status
+  qris_url           String
+  qris_string        String
+  expires_at         String
+  paid_at            String?
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+  user_id            String
+  user               User     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  item_id            String
+  item               Item     @relation(fields: [item_id], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
 
 model News {
