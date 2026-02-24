@@ -67,3 +67,32 @@ export const checkNickname = async (req: Request, res: Response) => {
     response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
   }
 }
+
+export const getPrepaidService = async (req: Request, res: Response) => {
+  const sq = req.query
+  const filter_type = sq.filter_type?.toString() || ''
+  const filter_value = sq.filter_value?.toString() || ''
+  const key = process.env.VIP_API_KEY
+  const sign = process.env.VIP_API_SIGN
+  const type = 'services'
+  try {
+    const params = new URLSearchParams()
+    params.append('key', key!)
+    params.append('sign', sign!)
+    params.append('type', type!)
+    params.append('filter_type', filter_type!)
+    params.append('filter_value', filter_value!)
+    const results: AxiosResponse = await axios.post(`${ENDPOINT_EX.vip}/prepaid`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+    if (results.data.result) {
+      response({ res, status: 200, message: 'Berhasil mengambil data layanan prepaid', data: results.data.data })
+    } else {
+      response({ res, status: 500, message: results?.data?.message.toString() ?? '', data: results.data.data })
+    }
+  } catch {
+    response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
+  }
+}
