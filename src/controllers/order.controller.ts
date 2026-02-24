@@ -128,9 +128,9 @@ export const updateOrderByTrxId = async (req: Request, res: Response) => {
       },
     )
     const updated = await updateOrderByTransactionIdService(id, resQrisPw.data.status, resQrisPw.data.paid_at)
-    response({ res, status: 200, message: 'Success update', data: updated })
+    response({ res, status: 200, message: 'Berhasil memperbaharui transaksi.', data: updated })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
   }
 }
 
