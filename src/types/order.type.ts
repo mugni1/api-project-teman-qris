@@ -12,6 +12,7 @@ export interface CreatePaymentQrisPWRespose {
 export interface CreateOrderPayload {
   transaction_id: string
   destination: string
+  destination_second: string | undefined
   amount: number
   qris_url: string
   qris_string: string

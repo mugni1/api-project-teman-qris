@@ -7,6 +7,7 @@ export const createOrderService = async (payload: CreateOrderPayload) => {
     data: {
       transaction_id: payload.transaction_id,
       destination: payload.destination,
+      destination_second: payload.destination_second,
       amount: payload.amount,
       status: 'pending',
       qris_url: payload.qris_url,

@@ -62,6 +62,7 @@ export const createOrder = async (req: Request, res: Response) => {
     const result = await createOrderService({
       transaction_id: resQrisPw.data.transaction_id,
       destination: data.destination,
+      destination_second: data.destination_second,
       qris_url: resQrisPw.data.qris_url,
       qris_string: resQrisPw.data.qris_string,
       created_at: resQrisPw.data.created_at,

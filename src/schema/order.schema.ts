@@ -6,4 +6,9 @@ export const createOrderSchema = z.object({
     .string('destination is required')
     .min(6, 'minimum destination must be at least 6 characters')
     .max(100, 'maximum destination must be at least 100 characters'),
+  destination_second: z
+    .string('destination second is not valid')
+    .min(4, 'minimum destination must be at least 4 characters')
+    .max(100, 'maximum destination must be at least 100 characters')
+    .optional(),
 })
