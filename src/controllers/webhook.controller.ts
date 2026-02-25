@@ -16,12 +16,19 @@ export const handleWebhook = async (req: Request, res: Response) => {
 
   const isExistOrder = await getOrderByTransactionIdService(body.transaction_id)
   if (!isExistOrder) {
-    return response({ res, status: 404, message: 'Order not found' })
+    return response({ res, status: 404, message: 'Transaksi tidak ditemukan' })
   }
 
-  const updated = await updateOrderByTransactionIdService(body.transaction_id, body.status, body.paid_at)
-  if (!updated) {
-    return response({ res, status: 400, message: 'Failed updated' })
+  if (body.status == 'paid') {
+    const updated = await updateOrderByTransactionIdService(body.transaction_id, 'waiting', body.paid_at)
+    if (!updated) {
+      return response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
+    }
+  } else {
+    const updated = await updateOrderByTransactionIdService(body.transaction_id, body.status, body.paid_at)
+    if (!updated) {
+      return response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
+    }
   }
 
   response({ res, status: 200, message: 'Success handle webhooks', data: body })
