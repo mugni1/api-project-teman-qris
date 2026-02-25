@@ -48,6 +48,7 @@ export const getOrderByTransactionIdService = async (transaction_id: string) => 
         include: {
           category: {
             select: {
+              type: true,
               column_1_title: true,
               image_url: true,
               title: true,
