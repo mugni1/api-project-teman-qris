@@ -11,14 +11,6 @@ import {
 import axios, { AxiosResponse } from 'axios'
 import { ENDPOINT_EX } from '../endpoint/external.js'
 
-// const receivedSignature = body.signature
-// delete body.signature
-// const payload = JSON.stringify(body)
-// const expectedSignature = crypto.createHmac('sha256', process.env.QRIS_PW_SECRET_KEY as string).update(payload).digest('hex')
-// if (expectedSignature !== receivedSignature) {
-//     return response({ res, status: 401, message: 'Invalid signature' })
-// }
-
 export const handleWebhook = async (req: Request, res: Response) => {
   const body = req.body
   const key = process.env.VIP_API_KEY
