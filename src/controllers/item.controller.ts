@@ -16,7 +16,7 @@ export const getItems = async (req: Request, res: Response) => {
   const limit = Number(req.query.limit) || 10
   const page = Number(req.query.page) || 1
   const offset = Number((page - 1) * limit)
-  const order_by = req.query.order_by?.toString() || 'created_at'
+  const order_by = req.query.order_by?.toString() || 'sku_code'
   const sort_by = req.query.sort_by?.toString() || 'desc'
   const meta: Meta = { limit, offset, page, search, order_by, sort_by, total: 0 }
   try {

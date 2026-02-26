@@ -79,6 +79,12 @@ export const countCategoriesService = async (params: QueryParams) => {
 export const getCategoryByIdService = async (id: string) => {
   return await prisma.category.findUnique({
     where: { id },
-    include: { items: true },
+    include: {
+      items: {
+        orderBy: {
+          sku_code: 'desc',
+        },
+      },
+    },
   })
 }
