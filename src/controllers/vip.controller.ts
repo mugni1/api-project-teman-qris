@@ -4,6 +4,7 @@ import { Request, Response } from 'express'
 import { response } from '../utils/response.js'
 import { ENDPOINT_EX } from '../endpoint/external.js'
 import { VipProfileResponse } from '../types/vip.js'
+import { createPrepaidOrderSchema } from '../schema/vip.schema.js'
 
 export const getProfile = async (req: Request, res: Response) => {
   const key = process.env.VIP_API_KEY
@@ -123,6 +124,44 @@ export const getPrepaidTransaction = async (req: Request, res: Response) => {
     })
     if (results.data.result) {
       response({ res, status: 200, message: 'Berhasil mengambil list transaksi', data: results.data.data })
+    } else {
+      response({ res, status: 500, message: results?.data?.message.toString() ?? '', data: results.data.data })
+    }
+  } catch {
+    response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
+  }
+}
+
+export const createPrepaidOrder = async (req: Request, res: Response) => {
+  const body = req.body
+  const key = process.env.VIP_API_KEY
+  const sign = process.env.VIP_API_SIGN
+  const type = 'order'
+
+  if (!body) {
+    return response({ res, status: 400, message: 'Harap lengkapi semua data.' })
+  }
+
+  const { success, error, data } = createPrepaidOrderSchema.safeParse(body)
+  if (!success) {
+    const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
+    return response({ res, status: 400, message: 'Harap lengkapi semua data dengan benar.', errors })
+  }
+
+  try {
+    const params = new URLSearchParams()
+    params.append('key', key!)
+    params.append('sign', sign!)
+    params.append('type', type!)
+    params.append('service', data.service)
+    params.append('data_no', data.data_no)
+    const results: AxiosResponse = await axios.post(`${ENDPOINT_EX.vip}/prepaid`, params, {
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    })
+    if (results.data.result) {
+      response({ res, status: 201, message: 'Berhasil membuat transaksi.', data: results.data.data })
     } else {
       response({ res, status: 500, message: results?.data?.message.toString() ?? '', data: results.data.data })
     }
