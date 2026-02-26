@@ -25,6 +25,42 @@ export const isExistOrderPendingService = async (userId: string) => {
   })
 }
 
+export const getOrderByTransactionInvoiceService = async (transaction_invoice: string) => {
+  return await prisma.orderDetail.findUnique({
+    where: {
+      transaction_invoice,
+    },
+    include: {
+      user: {
+        omit: {
+          password: true,
+          provider: true,
+          role: true,
+          created_at: true,
+          updated_at: true,
+        },
+      },
+      item: {
+        omit: {
+          created_at: true,
+          updated_at: true,
+        },
+        include: {
+          category: {
+            select: {
+              type: true,
+              column_1_title: true,
+              image_url: true,
+              title: true,
+              studio: true,
+            },
+          },
+        },
+      },
+    },
+  })
+}
+
 export const getOrderByTransactionIdService = async (transaction_id: string) => {
   return await prisma.orderDetail.findUnique({
     where: {
@@ -96,16 +132,32 @@ export const getOrderByIdService = async (id: string) => {
 
 export const updateOrderByTransactionIdService = async (
   transaction_id: string,
-  status: 'paid' | 'expired' | 'failed' | 'cancelled' | 'pending' | 'waiting' | 'success',
-  paidAt?: string | null,
+  status: 'paid' | 'expired' | 'failed' | 'error' | 'cancelled' | 'pending' | 'waiting' | 'processing' | 'success',
+  paid_at?: string | null,
+  transaction_invoice?: string | null,
 ) => {
   return await prisma.orderDetail.update({
     where: {
       transaction_id,
     },
     data: {
+      transaction_invoice,
       status,
-      paid_at: paidAt,
+      paid_at,
+    },
+  })
+}
+
+export const updateOrderByTransactionInvoiceService = async (
+  status: 'paid' | 'expired' | 'failed' | 'error' | 'cancelled' | 'pending' | 'waiting' | 'processing' | 'success',
+  transaction_invoice: string,
+) => {
+  return await prisma.orderDetail.update({
+    where: {
+      transaction_invoice,
+    },
+    data: {
+      status,
     },
   })
 }
