@@ -54,23 +54,23 @@ export const registerController = async (req: Request, res: Response) => {
 export const loginController = async (req: Request, res: Response) => {
   const body = req.body
   if (!body) {
-    return response({ res, status: 400, message: 'Harap lengkapi form dengan benar.' })
+    return response({ res, status: 400, message: 'Lengkapi form dengan benar.' })
   }
   const { data, success, error } = loginSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Harap lengkapi form dengan benar.', errors })
+    return response({ res, status: 400, message: 'Lengkapi form dengan benar.', errors })
   }
   try {
     // find user exsist with email
     const isEmailExist = await loginEmailExistService(data.email)
     if (!isEmailExist) {
-      return response({ res, status: 400, message: 'Proses masuk gagal dikarenakan email atau kata sandi salah.' })
+      return response({ res, status: 400, message: 'Masuk gagal, Email atau kata sandi salah.' })
     }
     // compare password
     const isValidPassword = await comparePassword(data.password, isEmailExist.password as string)
     if (!isValidPassword) {
-      return response({ res, status: 400, message: 'Proses masuk gagal dikarenakan email atau kata sandi salah.' })
+      return response({ res, status: 400, message: 'Masuk gagal, Email atau kata sandi salah.' })
     }
     // generate token
     const token = generateToken({
@@ -85,7 +85,7 @@ export const loginController = async (req: Request, res: Response) => {
     response({
       res,
       status: 200,
-      message: 'Proses masuk berhasil, Selamat datang kembali.',
+      message: 'Masuk berhasil, Selamat datang kembali.',
       data: {
         token,
         user: isEmailExist,
