@@ -1,6 +1,7 @@
 import { createItemSchema, updateItemSchema } from '../schema/item.schema.js'
 import { getCategoryByIdService } from '../services/category.service.js'
 import {
+  countItemsService,
   createItemService,
   deleteItemService,
   getItemById,
@@ -21,6 +22,7 @@ export const getItems = async (req: Request, res: Response) => {
   const meta: Meta = { limit, offset, page, search, order_by, sort_by, total: 0 }
   try {
     const result = await getItemsService(meta)
+    meta.total = await countItemsService(meta)
     if (!result) {
       return response({ res, status: 400, message: 'Failed get item' })
     }

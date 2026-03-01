@@ -56,6 +56,18 @@ export const getItemsService = async (params: QueryParams) => {
   })
 }
 
+export const countItemsService = async (params: QueryParams) => {
+  return await prisma.item.count({
+    where: {
+      AND: [
+        {
+          title: { contains: params.search, mode: 'insensitive' },
+        },
+      ],
+    },
+  })
+}
+
 export const getItemById = async (id: string) => {
   return await prisma.item.findUnique({
     where: { id },
