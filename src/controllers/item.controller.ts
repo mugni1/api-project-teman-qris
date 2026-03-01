@@ -24,7 +24,7 @@ export const getItems = async (req: Request, res: Response) => {
     if (!result) {
       return response({ res, status: 400, message: 'Failed get item' })
     }
-    response({ res, status: 200, message: 'Success get items', data: result })
+    response({ res, status: 200, message: 'Success get items', data: result, meta })
   } catch {
     response({ res, status: 500, message: 'Internal server error' })
   }
