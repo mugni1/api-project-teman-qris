@@ -12,6 +12,7 @@ import StorageRoute from './routes/upload.route.js'
 import DigiflazzRoute from './routes/digiflazz.route.js'
 import VipRoute from './routes/vip.route.js'
 import CategoryRoute from './routes/category.route.js'
+import CarouselRoute from './routes/carousel.route.js'
 
 // init
 const app = expess()
@@ -50,6 +51,7 @@ app.use('/upload', StorageRoute)
 app.use('/digiflazz', DigiflazzRoute)
 app.use('/vip', VipRoute)
 app.use('/category', CategoryRoute)
+app.use('/carousel', CarouselRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
 // listen
