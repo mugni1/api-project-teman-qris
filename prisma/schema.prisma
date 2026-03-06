@@ -106,3 +106,14 @@ model Category {
   updated_at     DateTime @updatedAt
   items          Item[]
 }
+
+model Carousel {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  image_url   String
+  link        String
+  is_active   Boolean
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+}
