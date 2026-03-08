@@ -12,7 +12,7 @@ export const createNewsSchema = z.object({
   content: z
     .string('content is required')
     .min(10, 'minimum content must be at least 10 characters')
-    .max(5000, 'maximum content must have 5000 character'),
+    .max(10000, 'maximum content must have 10000 character'),
 })
 export type CreateNewsPayload = z.infer<typeof createNewsSchema>
 
@@ -30,7 +30,7 @@ export const updateNewsSchema = z.object({
   content: z
     .string('content is required')
     .min(10, 'minimum content must be at least 10 characters')
-    .max(5000, 'maximum content must have 5000 character')
+    .max(10000, 'maximum content must have 10000 character')
     .optional(),
 })
 export type UpdateNewsPayload = z.infer<typeof updateNewsSchema>
