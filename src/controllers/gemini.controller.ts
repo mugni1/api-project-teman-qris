@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import { response } from '../utils/response.js'
 import { generateNewsSchema } from '../schema/global.schema.js'
-import { openai } from '../libs/openapi.js'
+import { gemini } from '../libs/gemini.js'
 
 export const generateNews = async (req: Request, res: Response) => {
   const body = req.body
@@ -19,7 +19,8 @@ Buatkan berita berdasarkan topik berikut:
 
 Topik: ${data.topic}
 
-Format JSON:
+Kembalikan HANYA JSON valid:
+
 {
  "title": "",
  "summary": "",
@@ -28,13 +29,15 @@ Format JSON:
 }
 `
   try {
-    const results = await openai.responses.create({
-      model: 'gpt-4.1-mini',
-      input: prompt,
+    const results = await gemini.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: prompt,
     })
-    response({ res, status: 201, message: 'Berita berhasil dibuat', data: results.output_text })
-  } catch (err: unknown) {
-    console.log(err)
+    const text = results.text as string
+    const cleaned = text.replace(/```json/g, '').replace(/```/g, '')
+    const value = JSON.parse(cleaned.trim())
+    response({ res, status: 201, message: 'Berita berhasil dibuat', data: value })
+  } catch {
     response({ res, status: 500, message: 'Terjadi kesalahan pada server' })
   }
 }
