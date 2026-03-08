@@ -14,7 +14,6 @@ import VipRoute from './routes/vip.route.js'
 import CategoryRoute from './routes/category.route.js'
 import CarouselRoute from './routes/carousel.route.js'
 import UserRoute from './routes/user.route.js'
-import OpenAIRoute from './routes/openai.route.js'
 import GeminiRoute from './routes/gemini.route.js'
 
 // init
@@ -56,7 +55,6 @@ app.use('/vip', VipRoute)
 app.use('/category', CategoryRoute)
 app.use('/carousel', CarouselRoute)
 app.use('/user', UserRoute)
-app.use('/openai', OpenAIRoute)
 app.use('/gemini', GeminiRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
