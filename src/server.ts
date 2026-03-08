@@ -13,6 +13,7 @@ import DigiflazzRoute from './routes/digiflazz.route.js'
 import VipRoute from './routes/vip.route.js'
 import CategoryRoute from './routes/category.route.js'
 import CarouselRoute from './routes/carousel.route.js'
+import UserRoute from './routes/user.route.js'
 
 // init
 const app = expess()
@@ -52,6 +53,7 @@ app.use('/digiflazz', DigiflazzRoute)
 app.use('/vip', VipRoute)
 app.use('/category', CategoryRoute)
 app.use('/carousel', CarouselRoute)
+app.use('/user', UserRoute)
 app.use((_, res: Response) => response({ res, status: 404, message: 'Route not found' }))
 
 // listen
