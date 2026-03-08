@@ -36,6 +36,7 @@
     "googleapis": "^171.0.0",
     "imagekit": "^6.0.0",
     "jsonwebtoken": "^9.0.3",
+    "openai": "^6.27.0",
     "zod": "^4.3.5"
   }
 }
