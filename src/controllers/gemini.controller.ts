@@ -19,8 +19,9 @@ Buatkan berita berdasarkan topik berikut:
 
 Topik: ${data.topic}
 
+Jangan gunakan markdown.
+Jangan gunakan explanation.
 Kembalikan HANYA JSON valid:
-
 {
  "title": "",
  "summary": "",

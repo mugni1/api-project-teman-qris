@@ -8,6 +8,7 @@ export const createNewsService = async (payload: CreateNewsPayload) => {
       image_url: payload.image_url,
       title: payload.title,
       content: payload.content,
+      summary: payload.summary,
     },
   })
 }
@@ -19,6 +20,7 @@ export const updateNewsService = async (payload: UpdateNewsPayload, id: string) 
       image_url: payload.image_url,
       title: payload.title,
       content: payload.content,
+      summary: payload.summary,
     },
   })
 }

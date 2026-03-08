@@ -9,6 +9,10 @@ export const createNewsSchema = z.object({
     .string('title is required')
     .min(3, 'minimum title must be at least 3 characters')
     .max(150, 'maximum title must have 150 character'),
+  summary: z
+    .string('summary is required')
+    .min(10, 'minimum summary must be at least 10 characters')
+    .max(5000, 'maximum summary must have 5000 character'),
   content: z
     .string('content is required')
     .min(10, 'minimum content must be at least 10 characters')
@@ -26,6 +30,11 @@ export const updateNewsSchema = z.object({
     .string('title is required')
     .min(3, 'minimum title must be at least 3 characters')
     .max(150, 'maximum title must have 150 character')
+    .optional(),
+  summary: z
+    .string('summary is required')
+    .min(10, 'minimum summary must be at least 10 characters')
+    .max(5000, 'maximum summary must have 5000 character')
     .optional(),
   content: z
     .string('content is required')

@@ -79,6 +79,7 @@ model News {
   id         String   @id @default(cuid())
   image_url  String   @db.Text
   title      String
+  summary    String   @db.Text
   content    String   @db.Text
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
