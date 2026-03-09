@@ -22,6 +22,8 @@ Topik: ${data.topic}
 Jangan gunakan markdown.
 Jangan gunakan explanation.
 Kembalikan HANYA JSON valid:
+content minimal memiliki 5000 kata.
+content boleh menggunakan tag html dan style karena digunakan untuk react-quill.
 {
  "title": "",
  "summary": "",
@@ -29,16 +31,20 @@ Kembalikan HANYA JSON valid:
  "tags": []
 }
 `
+  const models = await gemini.models.list()
+
+  console.log(models)
   try {
     const results = await gemini.models.generateContent({
-      model: 'gemini-3.1-flash-lite', // 500 request / day || 250k token || 15 request / minute
+      model: 'gemini-3.1-flash-lite-preview', // 500 request / day || 250k token || 15 request / minute
       contents: prompt,
     })
     const text = results.text as string
     const cleaned = text.replace(/```json/g, '').replace(/```/g, '')
     const value = JSON.parse(cleaned.trim())
     response({ res, status: 201, message: 'Berita berhasil dibuat', data: value })
-  } catch {
+  } catch (err: unknown) {
+    console.log(err)
     response({ res, status: 500, message: 'Terjadi kesalahan pada server' })
   }
 }
