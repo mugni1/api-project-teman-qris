@@ -33,7 +33,7 @@ content boleh menggunakan tag html dan style karena digunakan untuk react-quill.
 `
   try {
     const results = await gemini.models.generateContent({
-      model: 'gemini-3.1-flash-lite-preview', // 500 request / day || 250k token || 15 request / minute
+      model: 'gemini-3.1-flash-lite-preview', // 500 request perday || 250k token perminute || 15 request perminute
       contents: prompt,
     })
     const text = results.text as string
