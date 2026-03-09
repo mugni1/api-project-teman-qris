@@ -31,9 +31,6 @@ content boleh menggunakan tag html dan style karena digunakan untuk react-quill.
  "tags": []
 }
 `
-  const models = await gemini.models.list()
-
-  console.log(models)
   try {
     const results = await gemini.models.generateContent({
       model: 'gemini-3.1-flash-lite-preview', // 500 request / day || 250k token || 15 request / minute
