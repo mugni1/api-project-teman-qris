@@ -31,7 +31,7 @@ Kembalikan HANYA JSON valid:
 `
   try {
     const results = await gemini.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3.1-flash-lite', // 500 request / day || 250k token || 15 request / minute
       contents: prompt,
     })
     const text = results.text as string
