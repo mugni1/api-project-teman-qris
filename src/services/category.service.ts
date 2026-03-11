@@ -45,15 +45,17 @@ export const deleteCategoryService = async (id: string) => {
   })
 }
 
-export const getCategoriesService = async (params: QueryParams) => {
-  const search = params.search.toLowerCase()
-  const typeSearch: CategoryType | undefined = categoryTypes.includes(search as CategoryType)
-    ? (search as CategoryType)
-    : undefined
-
+export const getCategoriesService = async (params: QueryParams, type?: 'credit' | 'quota' | 'games' | 'bill') => {
   return await prisma.category.findMany({
     where: {
-      OR: [{ title: { contains: params.search, mode: 'insensitive' } }, ...(typeSearch ? [{ type: typeSearch }] : [])],
+      AND: {
+        OR: [
+          { title: { contains: params.search, mode: 'insensitive' } },
+          { studio: { contains: params.search, mode: 'insensitive' } },
+          { studio: { contains: params.search, mode: 'insensitive' } },
+        ],
+        type,
+      },
     },
     orderBy: {
       [params.order_by]: params.sort_by,
@@ -63,15 +65,17 @@ export const getCategoriesService = async (params: QueryParams) => {
   })
 }
 
-export const countCategoriesService = async (params: QueryParams) => {
-  const search = params.search.toLowerCase()
-  const typeSearch: CategoryType | undefined = categoryTypes.includes(search as CategoryType)
-    ? (search as CategoryType)
-    : undefined
-
+export const countCategoriesService = async (params: QueryParams, type?: 'credit' | 'quota' | 'games' | 'bill') => {
   return await prisma.category.count({
     where: {
-      OR: [{ title: { contains: params.search, mode: 'insensitive' } }, ...(typeSearch ? [{ type: typeSearch }] : [])],
+      AND: {
+        OR: [
+          { title: { contains: params.search, mode: 'insensitive' } },
+          { studio: { contains: params.search, mode: 'insensitive' } },
+          { studio: { contains: params.search, mode: 'insensitive' } },
+        ],
+        type,
+      },
     },
   })
 }

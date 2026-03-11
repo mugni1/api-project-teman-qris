@@ -19,13 +19,14 @@ export const getCategories = async (req: Request, res: Response) => {
   const offset = Number((page - 1) * limit)
   const order_by = req.query.order_by?.toString() || 'created_at'
   const sort_by = req.query.sort_by?.toString() || 'desc'
+  const type = req.query?.type as 'credit' | 'quota' | 'games' | 'bill'
 
   const params: QueryParams = { search, limit, page, offset, order_by, sort_by }
   const meta: Meta = { search, limit, page, offset, order_by, sort_by, total: 0 }
 
   try {
-    const data = await getCategoriesService(params)
-    meta.total = await countCategoriesService(params)
+    const data = await getCategoriesService(params, type)
+    meta.total = await countCategoriesService(params, type)
     response({ res, status: 200, message: 'Success get categories', data, meta })
   } catch {
     response({ res, status: 500, message: 'Internal server error' })
