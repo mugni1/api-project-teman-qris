@@ -19,21 +19,21 @@ export const me = async (req: Request, res: Response) => {
   const userId = req.user_id as string
   try {
     const data = await getUserByIdService(userId)
-    response({ res, status: 200, message: 'Success get user', data })
+    response({ res, status: 200, message: 'Berhasil mengambil data pengguna.', data })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const registerController = async (req: Request, res: Response) => {
   const body = req.body
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
   const { data, success, error } = registerSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
   try {
     data.password = hashedPassword(data.password)
@@ -41,13 +41,13 @@ export const registerController = async (req: Request, res: Response) => {
     // check email exist
     const isEmailExist = await registerEmailExistService(data.email)
     if (isEmailExist) {
-      return response({ res, status: 400, message: 'Failed register email is already exist' })
+      return response({ res, status: 400, message: 'Pendaftaran gagal, email sudah terdaftar.' })
     }
     // store to db
     const result = await registerService(data)
-    response({ res, status: 201, message: 'Success register', data: result })
+    response({ res, status: 201, message: 'Pendaftaran berhasil.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
@@ -92,7 +92,7 @@ export const loginController = async (req: Request, res: Response) => {
       },
     })
   } catch (err: unknown) {
-    response({ res, status: 500, message: 'Server sedang sibuk, Coba lagi nanti.', errors: err })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.', errors: err })
   }
 }
 

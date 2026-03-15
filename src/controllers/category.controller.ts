@@ -28,49 +28,49 @@ export const getCategories = async (req: Request, res: Response) => {
   try {
     const data = await getCategoriesService(params, type)
     meta.total = await countCategoriesService(params, type)
-    response({ res, status: 200, message: 'Success get categories', data, meta })
+    response({ res, status: 200, message: 'Berhasil mengambil data kategori.', data, meta })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const getCategoryById = async (req: Request, res: Response) => {
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
 
   try {
     const result = await getCategoryByIdService(id)
     if (!result) {
-      return response({ res, status: 404, message: 'Category not found' })
+      return response({ res, status: 404, message: 'Kategori tidak ditemukan.' })
     }
-    response({ res, status: 200, message: 'Success get category detail', data: result })
+    response({ res, status: 200, message: 'Berhasil mengambil detail kategori.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const createCategory = async (req: Request, res: Response) => {
   const body = req.body
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
 
   const { success, error, data } = createCategorySchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
 
   try {
     const result = await createCategoryService(data)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed create category' })
+      return response({ res, status: 400, message: 'Gagal membuat kategori.' })
     }
-    response({ res, status: 201, message: 'Success create category', data: result })
+    response({ res, status: 201, message: 'Berhasil membuat kategori.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
@@ -78,50 +78,50 @@ export const updateCategory = async (req: Request, res: Response) => {
   const body = req.body
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
 
   const { success, error, data } = updateCategorySchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
 
   try {
     const isExistCategory = await getCategoryByIdService(id)
     if (!isExistCategory) {
-      return response({ res, status: 404, message: 'Category not found' })
+      return response({ res, status: 404, message: 'Kategori tidak ditemukan.' })
     }
     const result = await updateCategoryService(data, id)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed update category' })
+      return response({ res, status: 400, message: 'Gagal memperbarui kategori.' })
     }
-    response({ res, status: 200, message: 'Success update category', data: result })
+    response({ res, status: 200, message: 'Berhasil memperbarui kategori.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const deleteCategory = async (req: Request, res: Response) => {
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
 
   try {
     const isExistCategory = await getCategoryByIdService(id)
     if (!isExistCategory) {
-      return response({ res, status: 404, message: 'Category not found' })
+      return response({ res, status: 404, message: 'Kategori tidak ditemukan.' })
     }
     const result = await deleteCategoryService(id)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed delete category' })
+      return response({ res, status: 400, message: 'Gagal menghapus kategori.' })
     }
-    response({ res, status: 200, message: 'Success delete category', data: result })
+    response({ res, status: 200, message: 'Berhasil menghapus kategori.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }

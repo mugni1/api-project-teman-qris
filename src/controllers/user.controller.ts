@@ -19,8 +19,8 @@ export const getUsers = async (req: Request, res: Response) => {
   try {
     const data = await getUserServices(user_id, params)
     meta.total = await countUserServices(user_id, params)
-    response({ res, status: 200, message: 'Berhasil mengambil data carousel', data, meta })
+    response({ res, status: 200, message: 'Berhasil mengambil data user.', data, meta })
   } catch {
-    response({ res, status: 500, message: 'Terjadi kesalahan pada server' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }

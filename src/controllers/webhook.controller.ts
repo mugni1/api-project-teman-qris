@@ -19,7 +19,7 @@ export const handleWebhook = async (req: Request, res: Response) => {
   try {
     const isExistOrder = await getOrderByTransactionIdService(body.transaction_id)
     if (!isExistOrder) {
-      return response({ res, status: 404, message: 'Transaksi tidak ditemukan' })
+      return response({ res, status: 404, message: 'Transaksi tidak ditemukan.' })
     }
 
     let transaction_invoice = undefined
@@ -63,7 +63,7 @@ export const handleWebhook = async (req: Request, res: Response) => {
     } else {
       await updateOrderByTransactionIdService(body.transaction_id, body.status, body.paid_at)
     }
-    response({ res, status: 200, message: 'OK' })
+    response({ res, status: 200, message: 'Berhasil memproses webhook.' })
   } catch {
     response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
   }
@@ -76,16 +76,16 @@ export const handleWebhookVip = async (req: Request, res: Response) => {
   const signature = req.headers['x-client-signature'] as string
   const expectedSignature = crypto.createHash('md5').update(sign!).digest('hex')
   if (signature !== expectedSignature) {
-    return response({ res, status: 400, message: 'Signature tidak benar' })
+    return response({ res, status: 400, message: 'Signature tidak valid.' })
   }
 
   try {
     const isExistOrder = await getOrderByTransactionInvoiceService(body.trxid)
     if (!isExistOrder) {
-      return response({ res, status: 404, message: 'Transaksi tidak di temukan' })
+      return response({ res, status: 404, message: 'Transaksi tidak ditemukan.' })
     }
     await updateOrderByTransactionInvoiceService(body.status, body.trxid)
-    response({ res, status: 200, message: 'OK' })
+    response({ res, status: 200, message: 'Berhasil memproses webhook.' })
   } catch {
     response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
   }

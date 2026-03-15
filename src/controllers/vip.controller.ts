@@ -19,7 +19,7 @@ export const getProfile = async (req: Request, res: Response) => {
       },
     })
     if (results.data.result) {
-      response({ res, status: 200, message: 'Berhasil mengablil data profile', data: results.data.data })
+      response({ res, status: 200, message: 'Berhasil mengambil data profil.', data: results.data.data })
     } else {
       response({ res, status: 500, message: results?.data?.message.toString() ?? '', data: results.data.data })
     }
@@ -54,14 +54,14 @@ export const checkNickname = async (req: Request, res: Response) => {
       response({
         res,
         status: 200,
-        message: 'Berhasil cek nickname',
+        message: 'Berhasil mengecek nickname.',
         data: { nickname: results.data.data },
       })
     } else {
       response({
         res,
         status: 500,
-        message: results?.data?.message.toString() ?? 'Tidak di temukan',
+        message: results?.data?.message.toString() ?? 'Data tidak ditemukan.',
       })
     }
   } catch {
@@ -89,7 +89,7 @@ export const getPrepaidService = async (req: Request, res: Response) => {
       },
     })
     if (results.data.result) {
-      response({ res, status: 200, message: 'Berhasil mengambil data layanan prepaid', data: results.data.data })
+      response({ res, status: 200, message: 'Berhasil mengambil data layanan prabayar.', data: results.data.data })
     } else {
       response({ res, status: 500, message: results?.data?.message.toString() ?? '', data: results.data.data })
     }
@@ -123,7 +123,7 @@ export const getPrepaidTransaction = async (req: Request, res: Response) => {
       },
     })
     if (results.data.result) {
-      response({ res, status: 200, message: 'Berhasil mengambil list transaksi', data: results.data.data })
+      response({ res, status: 200, message: 'Berhasil mengambil daftar transaksi.', data: results.data.data })
     } else {
       response({ res, status: 500, message: results?.data?.message.toString() ?? '', data: results.data.data })
     }

@@ -6,8 +6,8 @@ import fileUpload from 'express-fileupload'
 export const upload = async (req: Request, res: Response) => {
   try {
     const data = await imageValidateAndUpload(req.files?.image as fileUpload.UploadedFile, res)
-    response({ res, status: 200, message: 'Success upload file', data })
+    response({ res, status: 200, message: 'Berhasil mengunggah file.', data })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }

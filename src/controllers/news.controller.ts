@@ -26,50 +26,50 @@ export const getNews = async (req: Request, res: Response) => {
   try {
     const data = await getNewsService(params)
     meta.total = await countNewsService(params)
-    response({ res, status: 200, message: 'Success get news', data, meta })
+    response({ res, status: 200, message: 'Berhasil mengambil data berita.', data, meta })
   } catch (err: unknown) {
     console.log(err)
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const getNewsById = async (req: Request, res: Response) => {
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
 
   try {
     const result = await getNewsByIdService(id)
     if (!result) {
-      return response({ res, status: 404, message: 'News not found' })
+      return response({ res, status: 404, message: 'Berita tidak ditemukan.' })
     }
-    response({ res, status: 200, message: 'Success get news detail', data: result })
+    response({ res, status: 200, message: 'Berhasil mengambil detail berita.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const createNews = async (req: Request, res: Response) => {
   const body = req.body
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
 
   const { success, error, data } = createNewsSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
 
   try {
     const result = await createNewsService(data)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed create news' })
+      return response({ res, status: 400, message: 'Gagal membuat berita.' })
     }
-    response({ res, status: 201, message: 'Success create news', data: result })
+    response({ res, status: 201, message: 'Berhasil membuat berita.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
@@ -77,50 +77,50 @@ export const updateNews = async (req: Request, res: Response) => {
   const body = req.body
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
 
   const { success, error, data } = updateNewsSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
 
   try {
     const isExistNews = await getNewsByIdService(id)
     if (!isExistNews) {
-      return response({ res, status: 404, message: 'News not found' })
+      return response({ res, status: 404, message: 'Berita tidak ditemukan.' })
     }
     const result = await updateNewsService(data, id)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed update news' })
+      return response({ res, status: 400, message: 'Gagal memperbarui berita.' })
     }
-    response({ res, status: 200, message: 'Success update news', data: result })
+    response({ res, status: 200, message: 'Berhasil memperbarui berita.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const deleteNews = async (req: Request, res: Response) => {
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
 
   try {
     const isExistNews = await getNewsByIdService(id)
     if (!isExistNews) {
-      return response({ res, status: 404, message: 'News not found' })
+      return response({ res, status: 404, message: 'Berita tidak ditemukan.' })
     }
     const result = await deleteNewsService(id)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed delete news' })
+      return response({ res, status: 400, message: 'Gagal menghapus berita.' })
     }
-    response({ res, status: 200, message: 'Success delete news', data: result })
+    response({ res, status: 200, message: 'Berhasil menghapus berita.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }

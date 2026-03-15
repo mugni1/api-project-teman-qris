@@ -24,36 +24,36 @@ export const getItems = async (req: Request, res: Response) => {
     const result = await getItemsService(meta)
     meta.total = await countItemsService(meta)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed get item' })
+      return response({ res, status: 400, message: 'Gagal mengambil data item.' })
     }
-    response({ res, status: 200, message: 'Success get items', data: result, meta })
+    response({ res, status: 200, message: 'Berhasil mengambil data item.', data: result, meta })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const createItem = async (req: Request, res: Response) => {
   const body = req.body
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
   const { success, error, data } = createItemSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
   try {
     const isExistCategory = await getCategoryByIdService(data.category_id)
     if (!isExistCategory) {
-      return response({ res, status: 404, message: 'Category not found' })
+      return response({ res, status: 404, message: 'Kategori tidak ditemukan.' })
     }
     const result = await createItemService(data)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed create item' })
+      return response({ res, status: 400, message: 'Gagal membuat item.' })
     }
-    response({ res, status: 201, message: 'Success create item', data: result })
+    response({ res, status: 201, message: 'Berhasil membuat item.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
@@ -61,53 +61,53 @@ export const updateItem = async (req: Request, res: Response) => {
   const body = req.body
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
   if (!body) {
-    return response({ res, status: 400, message: 'Invalid input' })
+    return response({ res, status: 400, message: 'Input tidak valid.' })
   }
   const { success, error, data } = updateItemSchema.safeParse(body)
   if (!success) {
     const errors = error.issues.map((err) => ({ message: err.message, path: err.path.join('_') }))
-    return response({ res, status: 400, message: 'Invalid input', errors })
+    return response({ res, status: 400, message: 'Input tidak valid.', errors })
   }
   try {
     if (data.category_id) {
       const isExistCategory = await getCategoryByIdService(data.category_id)
       if (!isExistCategory) {
-        return response({ res, status: 404, message: 'Category not found' })
+        return response({ res, status: 404, message: 'Kategori tidak ditemukan.' })
       }
     }
     const isExistItem = await getItemById(id)
     if (!isExistItem) {
-      return response({ res, status: 404, message: 'Item not found' })
+      return response({ res, status: 404, message: 'Item tidak ditemukan.' })
     }
     const result = await updateItemService(data, id)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed update item' })
+      return response({ res, status: 400, message: 'Gagal memperbarui item.' })
     }
-    response({ res, status: 200, message: 'Success update item', data: result })
+    response({ res, status: 200, message: 'Berhasil memperbarui item.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
 export const deleteItem = async (req: Request, res: Response) => {
   const id = req.params.id as string
   if (!id) {
-    return response({ res, status: 400, message: 'Parameter id is required' })
+    return response({ res, status: 400, message: 'Parameter id wajib diisi.' })
   }
   try {
     const isExistItem = await getItemById(id)
     if (!isExistItem) {
-      return response({ res, status: 404, message: 'Item not found' })
+      return response({ res, status: 404, message: 'Item tidak ditemukan.' })
     }
     const result = await deleteItemService(id)
     if (!result) {
-      return response({ res, status: 400, message: 'Failed delete item' })
+      return response({ res, status: 400, message: 'Gagal menghapus item.' })
     }
-    response({ res, status: 200, message: 'Success delete item', data: result })
+    response({ res, status: 200, message: 'Berhasil menghapus item.', data: result })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }

@@ -30,7 +30,7 @@ export const createOrder = async (req: Request, res: Response) => {
   try {
     const isExistOrderPending = await isExistOrderPendingService(userId)
     if (isExistOrderPending) {
-      return response({ res, status: 400, message: 'Harap selesaikan pembayaran ditransaksi sebelumnya.' })
+      return response({ res, status: 400, message: 'Harap selesaikan pembayaran di transaksi sebelumnya.' })
     }
 
     const isExistItem = await getItemById(data.item_id)
@@ -38,7 +38,7 @@ export const createOrder = async (req: Request, res: Response) => {
       return response({
         res,
         status: 404,
-        message: 'Gagal membuat transaksi, dikarenakan item yang di pilih tidak tersedia.',
+        message: 'Gagal membuat transaksi karena item yang dipilih tidak tersedia.',
       })
     }
 
@@ -74,9 +74,9 @@ export const createOrder = async (req: Request, res: Response) => {
     if (!result) {
       return response({ res, status: 400, message: 'Gagal membuat transaksi, coba lagi nanti.' })
     }
-    response({ res, status: 201, message: 'Berhasil membuat transaksi, silahkan lakukan pembayaran.', data: result })
+    response({ res, status: 201, message: 'Berhasil membuat transaksi, silakan lakukan pembayaran.', data: result })
   } catch (err: unknown) {
-    response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
@@ -90,7 +90,7 @@ export const getOrderById = async (req: Request, res: Response) => {
     if (!isExistOrderById) {
       const isExistOrderByTransactionId = await getOrderByTransactionIdService(id)
       if (!isExistOrderByTransactionId) {
-        return response({ res, status: 404, message: 'Order detail not found' })
+        return response({ res, status: 404, message: 'Detail transaksi tidak ditemukan.' })
       } else {
         orderDetail = isExistOrderByTransactionId
       }
@@ -98,12 +98,12 @@ export const getOrderById = async (req: Request, res: Response) => {
       orderDetail = isExistOrderById
     }
     if (orderDetail.user_id != userId) {
-      return response({ res, status: 403, message: 'Cannot access this order detail' })
+      return response({ res, status: 403, message: 'Tidak dapat mengakses detail transaksi ini.' })
     }
     response({
       res,
       status: 200,
-      message: 'Success get order detail',
+      message: 'Berhasil mengambil detail transaksi.',
       data: {
         ...orderDetail,
         server_time: new Date().getTime(),
@@ -111,7 +111,7 @@ export const getOrderById = async (req: Request, res: Response) => {
       },
     })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
 
@@ -128,7 +128,7 @@ export const updateOrderByTrxId = async (req: Request, res: Response) => {
       },
     )
     const updated = await updateOrderByTransactionIdService(id, resQrisPw.data.status, resQrisPw.data.paid_at)
-    response({ res, status: 200, message: 'Berhasil memperbaharui transaksi.', data: updated })
+    response({ res, status: 200, message: 'Berhasil memperbarui transaksi.', data: updated })
   } catch {
     response({ res, status: 500, message: 'Server sedang sibuk, coba lagi nanti.' })
   }
@@ -147,8 +147,8 @@ export const getOrders = async (req: Request, res: Response) => {
   try {
     const data = await getOrderByUserLoginService(meta, user_id)
     meta.total = await countOrderByUserLoginService(meta, user_id)
-    response({ res, status: 200, message: 'Succes get orders', data, meta })
+    response({ res, status: 200, message: 'Berhasil mengambil data transaksi.', data, meta })
   } catch {
-    response({ res, status: 500, message: 'Internal server error' })
+    response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }
 }
