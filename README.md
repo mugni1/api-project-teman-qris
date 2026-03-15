@@ -185,6 +185,234 @@ curl -X DELETE "http://localhost:5055/news/ckxyz..." \
 }
 ```
 
+
+**Category API**
+
+Base path: `/category`
+
+**Endpoints**
+
+| Method | Path           | Auth         | Deskripsi                                      |
+| ------ | -------------- | ------------ | ---------------------------------------------- |
+| GET    | `/category`    | Public       | Ambil daftar kategori (pagination + pencarian). |
+| GET    | `/category/:id`| Public       | Ambil detail kategori.                         |
+| POST   | `/category`    | `super_user` | Buat kategori baru.                            |
+| PUT    | `/category/:id`| `super_user` | Perbarui kategori.                             |
+| DELETE | `/category/:id`| `super_user` | Hapus kategori.                                |
+
+**Query Params (GET /category)**
+
+- `search`: string, opsional. Pencarian teks bebas.
+- `limit`: number, opsional. Default `10`.
+- `page`: number, opsional. Default `1`.
+- `order_by`: string, opsional. Default `created_at`.
+- `sort_by`: asc dan desc, opsional. Default `desc`.
+- `type`: credit | quota | games | bill | credit_quota, opsional.
+
+**Body (POST /category)**
+Semua field wajib diisi.
+
+- `title`: string, min 3, max 150
+- `studio`: string, min 3, max 50
+- `image_url`: string, min 5, max 500
+- `cover_url`: string, min 5, max 500
+- `type`: credit | quota | games | bill | credit_quota
+- `column_1`: boolean
+- `column_2`: boolean
+- `column_1_title`: string, min 1, max 100
+- `column_2_title`: string, min 1, max 100
+
+**Body (PUT /category/:id)**
+Semua field opsional, tapi jika dikirim harus sesuai validasi.
+
+- `title`: string, min 3, max 150
+- `studio`: string, min 3, max 50
+- `image_url`: string, min 5, max 500
+- `cover_url`: string, min 5, max 500
+- `type`: credit | quota | games | bill | credit_quota
+- `column_1`: boolean
+- `column_2`: boolean
+- `column_1_title`: string, min 1, max 100
+- `column_2_title`: string, min 1, max 100
+
+**Contoh Request Dan Response (GET /category)**
+
+```bash
+curl -X GET "http://localhost:5055/category?search=game&limit=10&page=1&type=games" \
+  -H "Content-Type: application/json"
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengambil data kategori.",
+  "data": [
+    {
+      "id": "ckxyz...",
+      "title": "Top Up Game",
+      "studio": "Game Studio",
+      "image_url": "https://cdn.example.com/category/1.jpg",
+      "cover_url": "https://cdn.example.com/category/cover-1.jpg",
+      "type": "games",
+      "column_1": true,
+      "column_2": false,
+      "column_1_title": "Keterangan 1",
+      "column_2_title": "Keterangan 2",
+      "created_at": "2024-01-01T10:00:00.000Z",
+      "updated_at": "2024-01-01T10:00:00.000Z"
+    }
+  ],
+  "meta": {
+    "search": "game",
+    "page": 1,
+    "limit": 10,
+    "offset": 0,
+    "total": 1,
+    "order_by": "created_at",
+    "sort_by": "desc"
+  },
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (GET /category/:id)**
+
+```bash
+curl -X GET "http://localhost:5055/category/ckxyz..." \
+  -H "Content-Type: application/json"
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengambil detail kategori.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Top Up Game",
+    "studio": "Game Studio",
+    "image_url": "https://cdn.example.com/category/1.jpg",
+    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
+    "type": "games",
+    "column_1": true,
+    "column_2": false,
+    "column_1_title": "Keterangan 1",
+    "column_2_title": "Keterangan 2",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-01T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (POST /category)**
+
+```bash
+curl -X POST "http://localhost:5055/category" \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>" \
+  -d '{
+    "title": "Top Up Game",
+    "studio": "Game Studio",
+    "image_url": "https://cdn.example.com/category/1.jpg",
+    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
+    "type": "games",
+    "column_1": true,
+    "column_2": false,
+    "column_1_title": "Keterangan 1",
+    "column_2_title": "Keterangan 2"
+  }'
+```
+
+```json
+{
+  "status": 201,
+  "message": "Berhasil membuat kategori.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Top Up Game",
+    "studio": "Game Studio",
+    "image_url": "https://cdn.example.com/category/1.jpg",
+    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
+    "type": "games",
+    "column_1": true,
+    "column_2": false,
+    "column_1_title": "Keterangan 1",
+    "column_2_title": "Keterangan 2",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-01T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (PUT /category/:id)**
+
+```bash
+curl -X PUT "http://localhost:5055/category/ckxyz..." \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>" \
+  -d '{
+    "title": "Top Up Game (Update)",
+    "column_2": true
+  }'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil memperbarui kategori.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Top Up Game (Update)",
+    "studio": "Game Studio",
+    "image_url": "https://cdn.example.com/category/1.jpg",
+    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
+    "type": "games",
+    "column_1": true,
+    "column_2": true,
+    "column_1_title": "Keterangan 1",
+    "column_2_title": "Keterangan 2",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-02T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (DELETE /category/:id)**
+
+```bash
+curl -X DELETE "http://localhost:5055/category/ckxyz..." \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil menghapus kategori.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Top Up Game",
+    "studio": "Game Studio",
+    "image_url": "https://cdn.example.com/category/1.jpg",
+    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
+    "type": "games",
+    "column_1": true,
+    "column_2": false,
+    "column_1_title": "Keterangan 1",
+    "column_2_title": "Keterangan 2",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-01T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
 **Carousel API**
 
 Base path: `/carousel`
