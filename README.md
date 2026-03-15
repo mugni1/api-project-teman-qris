@@ -185,20 +185,19 @@ curl -X DELETE "http://localhost:5055/news/ckxyz..." \
 }
 ```
 
-
 **Category API**
 
 Base path: `/category`
 
 **Endpoints**
 
-| Method | Path           | Auth         | Deskripsi                                      |
-| ------ | -------------- | ------------ | ---------------------------------------------- |
-| GET    | `/category`    | Public       | Ambil daftar kategori (pagination + pencarian). |
-| GET    | `/category/:id`| Public       | Ambil detail kategori.                         |
-| POST   | `/category`    | `super_user` | Buat kategori baru.                            |
-| PUT    | `/category/:id`| `super_user` | Perbarui kategori.                             |
-| DELETE | `/category/:id`| `super_user` | Hapus kategori.                                |
+| Method | Path            | Auth         | Deskripsi                                       |
+| ------ | --------------- | ------------ | ----------------------------------------------- |
+| GET    | `/category`     | Public       | Ambil daftar kategori (pagination + pencarian). |
+| GET    | `/category/:id` | Public       | Ambil detail kategori.                          |
+| POST   | `/category`     | `super_user` | Buat kategori baru.                             |
+| PUT    | `/category/:id` | `super_user` | Perbarui kategori.                              |
+| DELETE | `/category/:id` | `super_user` | Hapus kategori.                                 |
 
 **Query Params (GET /category)**
 
@@ -298,7 +297,22 @@ curl -X GET "http://localhost:5055/category/ckxyz..." \
     "column_1_title": "Keterangan 1",
     "column_2_title": "Keterangan 2",
     "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "updated_at": "2024-01-01T10:00:00.000Z",
+    "items": [
+      {
+        "id": "coyuuca...",
+        "title": "Diamond 12",
+        "image_url": "https://cdn.example.com/item/1.jpg",
+        "price": 1000,
+        "stock": 0,
+        "unlimited_stock": true,
+        "seller_name": "MUGNI STORE",
+        "sku_code": "BYD130",
+        "created_at": "2026-03-05T05:20:41.648Z",
+        "updated_at": "2026-03-05T07:00:39.053Z",
+        "category_id": "ckxyz..."
+      }
+    ]
   },
   "meta": null,
   "errors": null
@@ -405,6 +419,185 @@ curl -X DELETE "http://localhost:5055/category/ckxyz..." \
     "column_2": false,
     "column_1_title": "Keterangan 1",
     "column_2_title": "Keterangan 2",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-01T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Item API**
+
+Base path: `/item`
+
+**Endpoints**
+
+| Method | Path        | Auth         | Deskripsi                                   |
+| ------ | ----------- | ------------ | ------------------------------------------- |
+| GET    | `/item`     | Public       | Ambil daftar item (pagination + pencarian). |
+| POST   | `/item`     | `super_user` | Buat item baru.                             |
+| PUT    | `/item/:id` | `super_user` | Perbarui item.                              |
+| DELETE | `/item/:id` | `super_user` | Hapus item.                                 |
+
+**Query Params (GET /item)**
+
+- `search`: string, opsional. Pencarian teks bebas.
+- `limit`: number, opsional. Default `10`.
+- `page`: number, opsional. Default `1`.
+- `order_by`: string, opsional. Default `sku_code`.
+- `sort_by`: asc dan desc, opsional. Default `desc`.
+
+**Body (POST /item)**
+Semua field wajib diisi.
+
+- `title`: string, max 50
+- `image_url`: string, min 5, max 500
+- `price`: number, min 0
+- `stock`: number, min 0
+- `unlimited_stock`: boolean
+- `seller_name`: string, max 50
+- `sku_code`: string, max 10
+- `category_id`: string
+
+**Body (PUT /item/:id)**
+Semua field opsional, tapi jika dikirim harus sesuai validasi.
+
+- `title`: string, max 50
+- `image_url`: string, min 5, max 500
+- `price`: number, min 0
+- `stock`: number, min 0
+- `unlimited_stock`: boolean
+- `seller_name`: string, max 50
+- `sku_code`: string, max 10
+- `category_id`: string
+
+**Contoh Request Dan Response (GET /item)**
+
+```bash
+curl -X GET "http://localhost:5055/item?search=sku&limit=10&page=1"   -H "Content-Type: application/json"
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengambil data item.",
+  "data": [
+    {
+      "id": "ckxyz...",
+      "title": "Item A",
+      "image_url": "https://cdn.example.com/item/1.jpg",
+      "price": 10000,
+      "stock": 50,
+      "unlimited_stock": false,
+      "seller_name": "Seller A",
+      "sku_code": "SKU001",
+      "category_id": "cat123...",
+      "created_at": "2024-01-01T10:00:00.000Z",
+      "updated_at": "2024-01-01T10:00:00.000Z"
+    }
+  ],
+  "meta": {
+    "search": "sku",
+    "page": 1,
+    "limit": 10,
+    "offset": 0,
+    "total": 1,
+    "order_by": "sku_code",
+    "sort_by": "desc"
+  },
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (POST /item)**
+
+```bash
+curl -X POST "http://localhost:5055/item"   -H "Content-Type: application/json"   -H "Authorization: Bearer <token>"   -d '{
+    "title": "Item A",
+    "image_url": "https://cdn.example.com/item/1.jpg",
+    "price": 10000,
+    "stock": 50,
+    "unlimited_stock": false,
+    "seller_name": "Seller A",
+    "sku_code": "SKU001",
+    "category_id": "cat123..."
+  }'
+```
+
+```json
+{
+  "status": 201,
+  "message": "Berhasil membuat item.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Item A",
+    "image_url": "https://cdn.example.com/item/1.jpg",
+    "price": 10000,
+    "stock": 50,
+    "unlimited_stock": false,
+    "seller_name": "Seller A",
+    "sku_code": "SKU001",
+    "category_id": "cat123...",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-01T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (PUT /item/:id)**
+
+```bash
+curl -X PUT "http://localhost:5055/item/ckxyz..."   -H "Content-Type: application/json"   -H "Authorization: Bearer <token>"   -d '{
+    "title": "Item A (Update)",
+    "stock": 40
+  }'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil memperbarui item.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Item A (Update)",
+    "image_url": "https://cdn.example.com/item/1.jpg",
+    "price": 10000,
+    "stock": 40,
+    "unlimited_stock": false,
+    "seller_name": "Seller A",
+    "sku_code": "SKU001",
+    "category_id": "cat123...",
+    "created_at": "2024-01-01T10:00:00.000Z",
+    "updated_at": "2024-01-02T10:00:00.000Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (DELETE /item/:id)**
+
+```bash
+curl -X DELETE "http://localhost:5055/item/ckxyz..."   -H "Content-Type: application/json"   -H "Authorization: Bearer <token>"
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil menghapus item.",
+  "data": {
+    "id": "ckxyz...",
+    "title": "Item A",
+    "image_url": "https://cdn.example.com/item/1.jpg",
+    "price": 10000,
+    "stock": 50,
+    "unlimited_stock": false,
+    "seller_name": "Seller A",
+    "sku_code": "SKU001",
+    "category_id": "cat123...",
     "created_at": "2024-01-01T10:00:00.000Z",
     "updated_at": "2024-01-01T10:00:00.000Z"
   },
