@@ -11,6 +11,7 @@ import {
 import { Meta } from '../types/meta.type.js'
 import { QueryParams } from '../types/query.type.js'
 import { response } from '../utils/response.js'
+import { categoryType } from '../types/category.js'
 
 export const getCategories = async (req: Request, res: Response) => {
   const search = req.query.search?.toString() || ''
@@ -19,7 +20,7 @@ export const getCategories = async (req: Request, res: Response) => {
   const offset = Number((page - 1) * limit)
   const order_by = req.query.order_by?.toString() || 'created_at'
   const sort_by = req.query.sort_by?.toString() || 'desc'
-  const type = req.query?.type as 'credit' | 'quota' | 'games' | 'bill'
+  const type = req.query?.type as categoryType
 
   const params: QueryParams = { search, limit, page, offset, order_by, sort_by }
   const meta: Meta = { search, limit, page, offset, order_by, sort_by, total: 0 }

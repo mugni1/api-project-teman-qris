@@ -86,6 +86,7 @@ model News {
 }
 
 enum Type {
+  credit_quota
   credit
   quota
   games

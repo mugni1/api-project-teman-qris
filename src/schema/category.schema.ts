@@ -17,7 +17,7 @@ export const createCategorySchema = z.object({
     .string('cover_url is required')
     .min(5, 'minimum cover_url must be at least 5 characters')
     .max(500, 'maximum cover_url must have 500 character'),
-  type: z.enum(['credit', 'quota', 'games', 'bill'], {
+  type: z.enum(['credit', 'quota', 'games', 'bill', 'credit_quota'], {
     error: 'type must be one of: credit, quota, games, bill',
   }),
   column_1: z.boolean('column_1 must be a boolean'),
@@ -55,7 +55,7 @@ export const updateCategorySchema = z.object({
     .max(500, 'maximum cover_url must have 500 character')
     .optional(),
   type: z
-    .enum(['credit', 'quota', 'games', 'bill'], {
+    .enum(['credit', 'quota', 'games', 'bill', 'credit_quota'], {
       error: 'type must be one of: credit, quota, games, bill',
     })
     .optional(),

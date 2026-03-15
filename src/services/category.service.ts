@@ -1,10 +1,7 @@
 import { prisma } from '../libs/prisma.js'
 import { CreateCategoryPayload, UpdateCategoryPayload } from '../schema/category.schema.js'
+import { categoryType } from '../types/category.js'
 import { QueryParams } from '../types/query.type.js'
-
-const categoryTypes = ['credit', 'quota', 'games', 'bill'] as const
-
-type CategoryType = (typeof categoryTypes)[number]
 
 export const createCategoryService = async (payload: CreateCategoryPayload) => {
   return await prisma.category.create({
@@ -45,7 +42,7 @@ export const deleteCategoryService = async (id: string) => {
   })
 }
 
-export const getCategoriesService = async (params: QueryParams, type?: 'credit' | 'quota' | 'games' | 'bill') => {
+export const getCategoriesService = async (params: QueryParams, type?: categoryType) => {
   return await prisma.category.findMany({
     where: {
       AND: {
@@ -65,7 +62,7 @@ export const getCategoriesService = async (params: QueryParams, type?: 'credit' 
   })
 }
 
-export const countCategoriesService = async (params: QueryParams, type?: 'credit' | 'quota' | 'games' | 'bill') => {
+export const countCategoriesService = async (params: QueryParams, type?: categoryType) => {
   return await prisma.category.count({
     where: {
       AND: {
