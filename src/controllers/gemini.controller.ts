@@ -62,7 +62,8 @@ Struktur JSON:
 Ketentuan:
 - content minimal 5000 kata.
 - content maximal 100000 kata.
-- content boleh menggunakan tag html, p, h1, h2, h3, undeline, bold, miring, link dan boleh menggunakan warna teks dan background warna teks karena digunakan di react-quill dan vue-quill.
+- content boleh menggunakan tag html, p, h1, h2, h3, undeline, bold, miring, link dan boleh menggunakan warna teks karena digunakan di react-quill dan vue-quill.
+- content juga boleh memiliki spasi atau enter untuk memberi jarak dengan tag p
 `
 
   try {
