@@ -361,8 +361,7 @@ Semua field opsional, tapi jika dikirim harus sesuai validasi.
 **Contoh Request Dan Response (GET /category)**
 
 ```bash
-curl -X GET "http://localhost:5055/category?search=game&limit=10&page=1&type=games" \
-  -H "Content-Type: application/json"
+curl --location 'https://api.v2.mugni.my.id/category?limit=1&page=1&order_by=id&sort_by=asc&type=credit_quota'
 ```
 
 ```json
@@ -371,28 +370,28 @@ curl -X GET "http://localhost:5055/category?search=game&limit=10&page=1&type=gam
   "message": "Berhasil mengambil data kategori.",
   "data": [
     {
-      "id": "ckxyz...",
-      "title": "Top Up Game",
-      "studio": "Game Studio",
-      "image_url": "https://cdn.example.com/category/1.jpg",
-      "cover_url": "https://cdn.example.com/category/cover-1.jpg",
-      "type": "games",
+      "id": "cmlp3jpk60001vq0ipw0s7grj",
+      "title": "AXIS",
+      "studio": "AXIS Provider",
+      "image_url": "https://ik.imagekit.io/8fifwnm7r/uploads/axis_9Ku9KJfoWd.webp",
+      "cover_url": "https://ik.imagekit.io/8fifwnm7r/uploads/axis-banner__wLYgXIEe.webp",
       "column_1": true,
       "column_2": false,
-      "column_1_title": "Keterangan 1",
-      "column_2_title": "Keterangan 2",
-      "created_at": "2024-01-01T10:00:00.000Z",
-      "updated_at": "2024-01-01T10:00:00.000Z"
+      "column_1_title": "Nomer Telepon",
+      "column_2_title": "No Title",
+      "type": "credit_quota",
+      "created_at": "2026-02-16T11:34:12.006Z",
+      "updated_at": "2026-03-15T14:56:48.985Z"
     }
   ],
   "meta": {
-    "search": "game",
+    "search": "",
+    "limit": 1,
     "page": 1,
-    "limit": 10,
     "offset": 0,
-    "total": 1,
-    "order_by": "created_at",
-    "sort_by": "desc"
+    "order_by": "id",
+    "sort_by": "asc",
+    "total": 7
   },
   "errors": null
 }
@@ -401,8 +400,7 @@ curl -X GET "http://localhost:5055/category?search=game&limit=10&page=1&type=gam
 **Contoh Request Dan Response (GET /category/:id)**
 
 ```bash
-curl -X GET "http://localhost:5055/category/ckxyz..." \
-  -H "Content-Type: application/json"
+curl --location 'https://api.v2.mugni.my.id/category/cmlp3jpk60001vq0ipw0s7grj'
 ```
 
 ```json
@@ -410,18 +408,18 @@ curl -X GET "http://localhost:5055/category/ckxyz..." \
   "status": 200,
   "message": "Berhasil mengambil detail kategori.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Top Up Game",
-    "studio": "Game Studio",
-    "image_url": "https://cdn.example.com/category/1.jpg",
-    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
-    "type": "games",
+    "id": "cmlp3jpk60001vq0ipw0s7grj",
+    "title": "AXIS",
+    "studio": "AXIS Provider",
+    "image_url": "https://ik.imagekit.io/8fifwnm7r/uploads/axis_9Ku9KJfoWd.webp",
+    "cover_url": "https://ik.imagekit.io/8fifwnm7r/uploads/axis-banner__wLYgXIEe.webp",
     "column_1": true,
     "column_2": false,
-    "column_1_title": "Keterangan 1",
-    "column_2_title": "Keterangan 2",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z",
+    "column_1_title": "Nomer Telepon",
+    "column_2_title": "No Title",
+    "type": "credit_quota",
+    "created_at": "2026-02-16T11:34:12.006Z",
+    "updated_at": "2026-03-15T14:56:48.985Z",
     "items": [
       {
         "id": "coyuuca...",
@@ -434,7 +432,7 @@ curl -X GET "http://localhost:5055/category/ckxyz..." \
         "sku_code": "BYD130",
         "created_at": "2026-03-05T05:20:41.648Z",
         "updated_at": "2026-03-05T07:00:39.053Z",
-        "category_id": "ckxyz..."
+        "category_id": "cmlp3jpk60001vq0ipw0s7grj"
       }
     ]
   },
@@ -446,20 +444,20 @@ curl -X GET "http://localhost:5055/category/ckxyz..." \
 **Contoh Request Dan Response (POST /category)**
 
 ```bash
-curl -X POST "http://localhost:5055/category" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "title": "Top Up Game",
-    "studio": "Game Studio",
-    "image_url": "https://cdn.example.com/category/1.jpg",
-    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
-    "type": "games",
+curl --location 'https://api.v2.mugni.my.id/category' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "title": "BYU",
+    "studio": "BYU Provider",
+    "image_url": "https://topup.ebelanja.id/_next/image?url=https%3A%2F%2Fs3.belanjapasti.com%2Fmedia%2Fimage%2Fbyu-339017.png&w=384&q=75",
+    "cover_url": "https://thelazy.media/wp-content/uploads/2025/05/Cover-Artikel-G2G.png",
+    "type": "credit",
     "column_1": true,
     "column_2": false,
-    "column_1_title": "Keterangan 1",
-    "column_2_title": "Keterangan 2"
-  }'
+    "column_1_title": "Nomer Telepon",
+    "column_2_title": "No Title"
+}'
 ```
 
 ```json
@@ -467,18 +465,18 @@ curl -X POST "http://localhost:5055/category" \
   "status": 201,
   "message": "Berhasil membuat kategori.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Top Up Game",
-    "studio": "Game Studio",
-    "image_url": "https://cdn.example.com/category/1.jpg",
-    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
-    "type": "games",
+    "id": "cmmsj6kq8000004jv0tgrpuba",
+    "title": "BYU",
+    "studio": "BYU Provider",
+    "image_url": "https://topup.ebelanja.id/_next/image?url=https%3A%2F%2Fs3.belanjapasti.com%2Fmedia%2Fimage%2Fbyu-339017.png&w=384&q=75",
+    "cover_url": "https://thelazy.media/wp-content/uploads/2025/05/Cover-Artikel-G2G.png",
     "column_1": true,
     "column_2": false,
-    "column_1_title": "Keterangan 1",
-    "column_2_title": "Keterangan 2",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "column_1_title": "Nomer Telepon",
+    "column_2_title": "No Title",
+    "type": "credit",
+    "created_at": "2026-03-16T01:54:53.936Z",
+    "updated_at": "2026-03-16T01:54:53.936Z"
   },
   "meta": null,
   "errors": null
@@ -488,13 +486,20 @@ curl -X POST "http://localhost:5055/category" \
 **Contoh Request Dan Response (PUT /category/:id)**
 
 ```bash
-curl -X PUT "http://localhost:5055/category/ckxyz..." \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "title": "Top Up Game (Update)",
-    "column_2": true
-  }'
+curl --location --request PUT 'https://api.v2.mugni.my.id/category/cmmsj6kq8000004jv0tgrpuba' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "title": "BYU (update)",
+    "studio": "BYU Provider (update)",
+    "image_url": "https://topup.ebelanja.id/_next/image?url=https%3A%2F%2Fs3.belanjapasti.com%2Fmedia%2Fimage%2Fbyu-339017.png&w=384&q=75update",
+    "cover_url": "https://thelazy.media/wp-content/uploads/2025/05/Cover-Artikel-G2G.png",
+    "type": "credit_quota",
+    "column_1": true,
+    "column_2": true,
+    "column_1_title": "Nomer Telepon (update)",
+    "column_2_title": "Nomer togel"
+}'
 ```
 
 ```json
@@ -502,18 +507,18 @@ curl -X PUT "http://localhost:5055/category/ckxyz..." \
   "status": 200,
   "message": "Berhasil memperbarui kategori.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Top Up Game (Update)",
-    "studio": "Game Studio",
-    "image_url": "https://cdn.example.com/category/1.jpg",
-    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
-    "type": "games",
+    "id": "cmmsj6kq8000004jv0tgrpuba",
+    "title": "BYU (update)",
+    "studio": "BYU Provider (update)",
+    "image_url": "https://topup.ebelanja.id/_next/image?url=https%3A%2F%2Fs3.belanjapasti.com%2Fmedia%2Fimage%2Fbyu-339017.png&w=384&q=75update",
+    "cover_url": "https://thelazy.media/wp-content/uploads/2025/05/Cover-Artikel-G2G.png",
     "column_1": true,
     "column_2": true,
-    "column_1_title": "Keterangan 1",
-    "column_2_title": "Keterangan 2",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-02T10:00:00.000Z"
+    "column_1_title": "Nomer Telepon (update)",
+    "column_2_title": "Nomer togel",
+    "type": "credit_quota",
+    "created_at": "2026-03-16T01:54:53.936Z",
+    "updated_at": "2026-03-16T01:58:55.569Z"
   },
   "meta": null,
   "errors": null
@@ -523,9 +528,8 @@ curl -X PUT "http://localhost:5055/category/ckxyz..." \
 **Contoh Request Dan Response (DELETE /category/:id)**
 
 ```bash
-curl -X DELETE "http://localhost:5055/category/ckxyz..." \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>"
+curl --location --request DELETE 'https://api.v2.mugni.my.id/category/cmmsj6kq8000004jv0tgrpuba' \
+--header 'Authorization: Bearer <token>'
 ```
 
 ```json
@@ -533,18 +537,18 @@ curl -X DELETE "http://localhost:5055/category/ckxyz..." \
   "status": 200,
   "message": "Berhasil menghapus kategori.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Top Up Game",
-    "studio": "Game Studio",
-    "image_url": "https://cdn.example.com/category/1.jpg",
-    "cover_url": "https://cdn.example.com/category/cover-1.jpg",
-    "type": "games",
+    "id": "cmmsj6kq8000004jv0tgrpuba",
+    "title": "BYU (update)",
+    "studio": "BYU Provider (update)",
+    "image_url": "https://topup.ebelanja.id/_next/image?url=https%3A%2F%2Fs3.belanjapasti.com%2Fmedia%2Fimage%2Fbyu-339017.png&w=384&q=75update",
+    "cover_url": "https://thelazy.media/wp-content/uploads/2025/05/Cover-Artikel-G2G.png",
     "column_1": true,
-    "column_2": false,
-    "column_1_title": "Keterangan 1",
-    "column_2_title": "Keterangan 2",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "column_2": true,
+    "column_1_title": "Nomer Telepon (update)",
+    "column_2_title": "Nomer togel",
+    "type": "credit_quota",
+    "created_at": "2026-03-16T01:54:53.936Z",
+    "updated_at": "2026-03-16T01:58:55.569Z"
   },
   "meta": null,
   "errors": null
