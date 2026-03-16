@@ -1232,3 +1232,140 @@ curl --location 'https://api.v2.mugni.my.id/upload' \
   "errors": null
 }
 ```
+
+**VIP-Reseller API**
+
+Base path: `/vip`
+
+**Endpoints**
+
+| Method | Path                   | Auth         | Deskripsi                                   |
+| ------ | ---------------------- | ------------ | ------------------------------------------- |
+| GET    | `/vip/profile`         | `super_user` | Dapatkan informasi akun VIP-Reseller.       |
+| GET    | `/vip/prepaid/service` | `super_user` | Dapatkan list layanan prepaid VIP-Reseller. |
+| GET    | `/vip/nickname`        | `super_user` | Cek nickname game.                          |
+
+**Contoh Request Dan Response (GET /vip/profile)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/vip/profile' \
+--header 'Authorization: Bearer <token>'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengambil data profil.",
+  "data": {
+    "full_name": "Asep Abdul Mugni",
+    "username": "Asepam2205",
+    "balance": 0,
+    "point": 0,
+    "level": "Basic",
+    "registered": "2026-02-19 13:48:46"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (GET /vip/prepaid/service)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/vip/prepaid/service' \
+--header 'Authorization: Bearer <token>'
+```
+
+```json
+{
+   "status": 200,
+    "message": "Berhasil mengambil data layanan prabayar.",
+    "data": [
+         {
+            "brand": "TRI",
+            "code": "TDN5",
+            "name": "1GB Nasional + 4GB (01.00 - 09.00) 1 Hari",
+            "note": "-",
+            "price": {
+                "basic": 5281,
+                "premium": 5256,
+                "special": 5231
+            },
+            "status": "empty",
+            "multi_trx": true,
+            "maintenace": "23:45 - 00:15",
+            "category": "Umum",
+            "prepost": "prepaid",
+            "type": "paket-internet"
+        },
+    ]
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (POST /vip/nickname)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/vip/nickname' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "type": "get-nickname",
+    "code": "mobile-legends",
+    "target": "766248295",
+    "additional_target": "12072"
+}'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengecek nickname.",
+  "data": {
+    "nickname": "HardCode"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**GEMINI-AI API**
+
+Base path: `/gemini`
+
+**Endpoints**
+
+| Method | Path           | Auth         | Deskripsi                       |
+| ------ | -------------- | ------------ | ------------------------------- |
+| POST   | `/gemini/news` | `super_user` | Buat berita otomatis dengan AI. |
+
+**Body (POST /gemini/news)**
+Semua field wajib diisi.
+
+- `topic`: string, min 10, max 255
+
+**Contoh Request Dan Response (POST /vip/nickname)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/gemini/news' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "topic": "Perkembangan Perang Antara Iran dan Amerika Serikat hari ini"
+}'
+```
+
+```json
+{
+  "status": 201,
+  "message": "Berita berhasil dibuat",
+  "data": {
+    "title": "Eskalasi Ketegangan di Timur Tengah: Analisis Mendalam Hubungan Iran dan Amerika Serikat Hari Ini",
+    "summary": "Laporan komprehensif mengenai dinamika hubungan terkini antara Iran dan Amerika Serikat di tengah bayang-bayang konflik regional yang terus berkembang.",
+    "content": "<h1>Eskalasi Ketegangan: Tinjauan Mendalam Konflik Iran dan Amerika Serikat</h1><p>Situasi geopolitik di Timur Tengah kembali mencapai titik didih seiring dengan meningkatnya ketegangan antara Republik Islam Iran dan Amerika Serikat. Hari ini, dunia menyaksikan pergeseran paradigma dalam pola interaksi kedua negara yang melibatkan proxy, serangan siber, dan diplomasi yang sangat rapuh.</p><h2>Latar Belakang Konflik yang Berkelanjutan</h2><p>Konflik antara Washington dan Teheran bukanlah fenomena baru. Sejak Revolusi Islam tahun 1979, hubungan kedua negara telah diwarnai dengan sanksi ekonomi, ancaman militer, dan perselisihan ideologis yang mendalam."
+  },
+  "meta": null,
+  "errors": null
+}
+```
