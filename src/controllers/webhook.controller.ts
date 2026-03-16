@@ -43,7 +43,11 @@ export const handleWebhook = async (req: Request, res: Response) => {
           transaction_invoice = results.data.data.trxid
         }
       }
-      if (isExistOrder.item.category.type == 'credit' || isExistOrder.item.category.type == 'quota') {
+      if (
+        isExistOrder.item.category.type == 'credit' ||
+        isExistOrder.item.category.type == 'quota' ||
+        isExistOrder.item.category.type == 'credit_quota'
+      ) {
         const params = new URLSearchParams()
         params.append('key', key!)
         params.append('sign', sign!)
@@ -59,7 +63,8 @@ export const handleWebhook = async (req: Request, res: Response) => {
           transaction_invoice = results.data.data.trxid
         }
       }
-      await updateOrderByTransactionIdService(body.transaction_id, 'waiting', body.paid_at, transaction_invoice)
+      // jika pembayaran berhasil ubah jadi processing
+      await updateOrderByTransactionIdService(body.transaction_id, 'processing', body.paid_at, transaction_invoice)
     } else {
       await updateOrderByTransactionIdService(body.transaction_id, body.status, body.paid_at)
     }
