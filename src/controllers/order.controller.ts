@@ -100,8 +100,10 @@ export const getOrderById = async (req: Request, res: Response) => {
     } else {
       orderDetail = isExistOrderById
     }
-    if (orderDetail.user_id != userId) {
-      return response({ res, status: 403, message: 'Tidak dapat mengakses detail transaksi ini.' })
+    if (role != 'super_user') {
+      if (orderDetail.user_id != userId) {
+        return response({ res, status: 403, message: 'Tidak dapat mengakses detail transaksi ini.' })
+      }
     }
     response({
       res,
