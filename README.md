@@ -1182,3 +1182,53 @@ curl --location 'https://api.v2.mugni.my.id/user?search=&limit=1&order_by=id&sor
   "errors": null
 }
 ```
+
+**Upload API**
+
+Base path: `/upload`
+
+**Endpoints**
+
+| Method | Path      | Auth         | Deskripsi                      |
+| ------ | --------- | ------------ | ------------------------------ |
+| POST   | `/upload` | `super_user` | Upload gambar ke server cloud. |
+
+**Body (POST /upload)**
+
+Semua field wajib diisi.
+
+- `image`: File, max size 4MB, image only
+
+**Contoh Request Dan Response (POST /upload)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/upload' \
+--header 'Authorization: Bearer <token>' \
+--form 'image=@"/home/mugni/Downloads/three-731863.webp"'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengunggah file.",
+  "data": {
+    "fileId": "69b76e855c7cd75eb8fb356b",
+    "name": "three-731863_lkuulNnJc.webp",
+    "size": 29564,
+    "versionInfo": {
+      "id": "69b76e855c7cd75eb8fb356b",
+      "name": "Version 1"
+    },
+    "filePath": "/uploads/three-731863_lkuulNnJc.webp",
+    "url": "https://ik.imagekit.io/8fifwnm7r/uploads/three-731863_lkuulNnJc.webp",
+    "fileType": "image",
+    "height": 300,
+    "width": 300,
+    "thumbnailUrl": "https://ik.imagekit.io/8fifwnm7r/tr:n-ik_ml_thumbnail/uploads/three-731863_lkuulNnJc.webp",
+    "AITags": null,
+    "description": null
+  },
+  "meta": null,
+  "errors": null
+}
+```
