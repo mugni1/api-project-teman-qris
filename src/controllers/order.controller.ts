@@ -3,10 +3,12 @@ import { response } from '../utils/response.js'
 import { createOrderSchema } from '../schema/order.schema.js'
 import {
   countOrderByUserLoginService,
+  countOrderService,
   createOrderService,
   getOrderByIdService,
   getOrderByTransactionIdService,
   getOrderByUserLoginService,
+  getOrderService,
   isExistOrderPendingService,
   updateOrderByTransactionIdService,
 } from '../services/order.service.js'
@@ -81,7 +83,8 @@ export const createOrder = async (req: Request, res: Response) => {
 }
 
 export const getOrderById = async (req: Request, res: Response) => {
-  const userId = req.user_id
+  const userId = req.user_id as string
+  const role = req.role as string
   const id = req.params.id as string
   let orderDetail
 
@@ -136,6 +139,7 @@ export const updateOrderByTrxId = async (req: Request, res: Response) => {
 
 export const getOrders = async (req: Request, res: Response) => {
   const user_id = req.user_id as string
+  const role = req.role as string
   const search = req.query.search?.toString() || ''
   const limit = Number(req.query.limit) || 10
   const page = Number(req.query.page) || 1
@@ -145,9 +149,15 @@ export const getOrders = async (req: Request, res: Response) => {
   const meta: Meta = { limit, offset, page, search, order_by, sort_by, total: 0 }
 
   try {
-    const data = await getOrderByUserLoginService(meta, user_id)
-    meta.total = await countOrderByUserLoginService(meta, user_id)
-    response({ res, status: 200, message: 'Berhasil mengambil data transaksi.', data, meta })
+    if (role == 'super_user') {
+      const data = await getOrderService(meta)
+      meta.total = await countOrderService(meta)
+      response({ res, status: 200, message: 'Berhasil mengambil data transaksi.', data, meta })
+    } else {
+      const data = await getOrderByUserLoginService(meta, user_id)
+      meta.total = await countOrderByUserLoginService(meta, user_id)
+      response({ res, status: 200, message: 'Berhasil mengambil data transaksi.', data, meta })
+    }
   } catch {
     response({ res, status: 500, message: 'Terjadi kesalahan pada server.' })
   }

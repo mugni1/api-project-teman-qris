@@ -205,3 +205,47 @@ export const countOrderByUserLoginService = async (params: QueryParams, id: stri
     },
   })
 }
+
+export const getOrderService = async (params: QueryParams) => {
+  return await prisma.orderDetail.findMany({
+    where: {
+      OR: [{ transaction_id: { mode: 'insensitive', contains: params.search } }],
+    },
+    orderBy: {
+      [params.order_by]: params.sort_by,
+    },
+    skip: params.offset,
+    take: params.limit,
+    include: {
+      item: {
+        omit: {
+          stock: true,
+          image_url: true,
+          seller_name: true,
+          price: true,
+          sku_code: true,
+          created_at: true,
+          updated_at: true,
+          unlimited_stock: true,
+        },
+        include: {
+          category: {
+            select: {
+              image_url: true,
+              title: true,
+            },
+          },
+        },
+      },
+    },
+    omit: { qris_string: true, qris_url: true, updated_at: true, user_id: true },
+  })
+}
+
+export const countOrderService = async (params: QueryParams) => {
+  return await prisma.orderDetail.count({
+    where: {
+      OR: [{ transaction_id: { mode: 'insensitive', contains: params.search } }],
+    },
+  })
+}
