@@ -1126,3 +1126,59 @@ curl --location --request PUT 'https://api.v2.mugni.my.id/order/MUGN-260316-891C
   "errors": null
 }
 ```
+
+**User API**
+
+Base path: `/user`
+
+**Endpoints**
+
+| Method | Path    | Auth         | Deskripsi                                   |
+| ------ | ------- | ------------ | ------------------------------------------- |
+| GET    | `/user` | `super_user` | Ambil daftar user (pagination + pencarian). |
+
+**Query Params (GET /user)**
+
+- `search`: string, opsional. Pencarian teks bebas.
+- `limit`: number, opsional. Default `10`.
+- `page`: number, opsional. Default `1`.
+- `order_by`: string, opsional. Default `created_at`.
+- `sort_by`: asc dan desc, opsional. Default `desc`.
+
+**Contoh Request Dan Response (GET /user)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/user?search=&limit=1&order_by=id&sort_by=desc' \
+--header 'Authorization: Bearer <token>'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengambil data user.",
+  "data": [
+    {
+      "id": "cmmsi8maw000004jjuk14uo80",
+      "email": "asepam@gmail.com",
+      "firstname": "Asep",
+      "avatar": null,
+      "lastname": "Mugni",
+      "fullname": "Asep Mugni",
+      "provider": "default",
+      "role": "user",
+      "created_at": "2026-03-16T01:28:29.672Z",
+      "updated_at": "2026-03-16T01:28:29.672Z"
+    }
+  ],
+  "meta": {
+    "search": "",
+    "limit": 1,
+    "page": 1,
+    "offset": 0,
+    "order_by": "id",
+    "sort_by": "desc",
+    "total": 3
+  },
+  "errors": null
+}
+```
