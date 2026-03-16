@@ -598,12 +598,12 @@ Semua field opsional, tapi jika dikirim harus sesuai validasi.
 - `unlimited_stock`: boolean
 - `seller_name`: string, max 50
 - `sku_code`: string, max 10
-- `category_id`: string
+- `category_id`: string, cuid
 
 **Contoh Request Dan Response (GET /item)**
 
 ```bash
-curl -X GET "http://localhost:5055/item?search=sku&limit=10&page=1"   -H "Content-Type: application/json"
+curl --location 'https://api.v2.mugni.my.id/item?search=by&limit=1&page=1&order_by=created_at&sort_by=desc'
 ```
 
 ```json
@@ -612,27 +612,27 @@ curl -X GET "http://localhost:5055/item?search=sku&limit=10&page=1"   -H "Conten
   "message": "Berhasil mengambil data item.",
   "data": [
     {
-      "id": "ckxyz...",
-      "title": "Item A",
-      "image_url": "https://cdn.example.com/item/1.jpg",
-      "price": 10000,
-      "stock": 50,
-      "unlimited_stock": false,
-      "seller_name": "Seller A",
-      "sku_code": "SKU001",
-      "category_id": "cat123...",
-      "created_at": "2024-01-01T10:00:00.000Z",
-      "updated_at": "2024-01-01T10:00:00.000Z"
+      "id": "cmmd0ouy8000004l4yittfozy",
+      "title": "By.U Data 1GB / 30 Hr",
+      "image_url": "https://ik.imagekit.io/8fifwnm7r/uploads/smartphone_YEiCu0ltCI.svg",
+      "price": 1000,
+      "stock": 0,
+      "unlimited_stock": true,
+      "seller_name": "MUGNI STORE",
+      "sku_code": "BYD130",
+      "created_at": "2026-03-05T05:20:41.648Z",
+      "updated_at": "2026-03-05T07:00:39.053Z",
+      "category_id": "cmmbewtrf000004l2h49e8cvz"
     }
   ],
   "meta": {
-    "search": "sku",
-    "page": 1,
-    "limit": 10,
+    "limit": 1,
     "offset": 0,
-    "total": 1,
-    "order_by": "sku_code",
-    "sort_by": "desc"
+    "page": 1,
+    "search": "by",
+    "order_by": "created_at",
+    "sort_by": "desc",
+    "total": 2
   },
   "errors": null
 }
@@ -641,16 +641,19 @@ curl -X GET "http://localhost:5055/item?search=sku&limit=10&page=1"   -H "Conten
 **Contoh Request Dan Response (POST /item)**
 
 ```bash
-curl -X POST "http://localhost:5055/item"   -H "Content-Type: application/json"   -H "Authorization: Bearer <token>"   -d '{
-    "title": "Item A",
-    "image_url": "https://cdn.example.com/item/1.jpg",
-    "price": 10000,
-    "stock": 50,
-    "unlimited_stock": false,
-    "seller_name": "Seller A",
-    "sku_code": "SKU001",
-    "category_id": "cat123..."
-  }'
+curl --location 'https://api.v2.mugni.my.id/item' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "title" : "By.U Data 1 GB 1 Hari",
+    "image_url": "https://www.svgrepo.com/show/288373/smartphone.svg",
+    "price" : 1000,
+    "stock" : 0,
+    "unlimited_stock": true,
+    "seller_name": "MUGNI STORE",
+    "sku_code": "BYD11",
+    "category_id": "cmmbewtrf000004l2h49e8cvz"
+}'
 ```
 
 ```json
@@ -658,17 +661,17 @@ curl -X POST "http://localhost:5055/item"   -H "Content-Type: application/json" 
   "status": 201,
   "message": "Berhasil membuat item.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Item A",
-    "image_url": "https://cdn.example.com/item/1.jpg",
-    "price": 10000,
-    "stock": 50,
-    "unlimited_stock": false,
-    "seller_name": "Seller A",
-    "sku_code": "SKU001",
-    "category_id": "cat123...",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "id": "cmmsjnz9a000004l4xs2w7umj",
+    "title": "By.U Data 1 GB 1 Hari",
+    "image_url": "https://www.svgrepo.com/show/288373/smartphone.svg",
+    "price": 1000,
+    "stock": 0,
+    "unlimited_stock": true,
+    "seller_name": "MUGNI STORE",
+    "sku_code": "BYD11",
+    "created_at": "2026-03-16T02:08:25.918Z",
+    "updated_at": "2026-03-16T02:08:25.918Z",
+    "category_id": "cmmbewtrf000004l2h49e8cvz"
   },
   "meta": null,
   "errors": null
@@ -678,10 +681,19 @@ curl -X POST "http://localhost:5055/item"   -H "Content-Type: application/json" 
 **Contoh Request Dan Response (PUT /item/:id)**
 
 ```bash
-curl -X PUT "http://localhost:5055/item/ckxyz..."   -H "Content-Type: application/json"   -H "Authorization: Bearer <token>"   -d '{
-    "title": "Item A (Update)",
-    "stock": 40
-  }'
+curl --location --request PUT 'https://api.v2.mugni.my.id/item/cmmsjnz9a000004l4xs2w7umj' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <update>' \
+--data '{
+    "title" : "By.U Data 1 GB 1 Hari (update)",
+    "image_url": "https://www.svgrepo.com/show/288373/smartphoneupdate.svg",
+    "price" : 2000,
+    "stock" : 100,
+    "unlimited_stock": false,
+    "seller_name": "MUGNI STORE",
+    "sku_code": "B(update)",
+    "category_id": "cmmbewtrf000004l2h49e8cvz"
+}'
 ```
 
 ```json
@@ -689,17 +701,17 @@ curl -X PUT "http://localhost:5055/item/ckxyz..."   -H "Content-Type: applicatio
   "status": 200,
   "message": "Berhasil memperbarui item.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Item A (Update)",
-    "image_url": "https://cdn.example.com/item/1.jpg",
-    "price": 10000,
-    "stock": 40,
+    "id": "cmmsjnz9a000004l4xs2w7umj",
+    "title": "By.U Data 1 GB 1 Hari (update)",
+    "image_url": "https://www.svgrepo.com/show/288373/smartphoneupdate.svg",
+    "price": 2000,
+    "stock": 100,
     "unlimited_stock": false,
-    "seller_name": "Seller A",
-    "sku_code": "SKU001",
-    "category_id": "cat123...",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-02T10:00:00.000Z"
+    "seller_name": "MUGNI STORE",
+    "sku_code": "B(update)",
+    "created_at": "2026-03-16T02:08:25.918Z",
+    "updated_at": "2026-03-16T02:11:26.832Z",
+    "category_id": "cmmbewtrf000004l2h49e8cvz"
   },
   "meta": null,
   "errors": null
@@ -709,7 +721,8 @@ curl -X PUT "http://localhost:5055/item/ckxyz..."   -H "Content-Type: applicatio
 **Contoh Request Dan Response (DELETE /item/:id)**
 
 ```bash
-curl -X DELETE "http://localhost:5055/item/ckxyz..."   -H "Content-Type: application/json"   -H "Authorization: Bearer <token>"
+curl --location --request DELETE 'https://api.v2.mugni.my.id/item/cmmsjnz9a000004l4xs2w7umj' \
+--header 'Authorization: Bearer <token>'
 ```
 
 ```json
@@ -717,17 +730,17 @@ curl -X DELETE "http://localhost:5055/item/ckxyz..."   -H "Content-Type: applica
   "status": 200,
   "message": "Berhasil menghapus item.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Item A",
-    "image_url": "https://cdn.example.com/item/1.jpg",
-    "price": 10000,
-    "stock": 50,
+    "id": "cmmsjnz9a000004l4xs2w7umj",
+    "title": "By.U Data 1 GB 1 Hari (update)",
+    "image_url": "https://www.svgrepo.com/show/288373/smartphoneupdate.svg",
+    "price": 2000,
+    "stock": 100,
     "unlimited_stock": false,
-    "seller_name": "Seller A",
-    "sku_code": "SKU001",
-    "category_id": "cat123...",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "seller_name": "MUGNI STORE",
+    "sku_code": "B(update)",
+    "created_at": "2026-03-16T02:08:25.918Z",
+    "updated_at": "2026-03-16T02:11:26.832Z",
+    "category_id": "cmmbewtrf000004l2h49e8cvz"
   },
   "meta": null,
   "errors": null
