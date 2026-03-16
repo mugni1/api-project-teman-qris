@@ -1,5 +1,129 @@
 # DOKUMENTASI API
 
+**Auth API**
+
+Base path: `/auth`
+
+**Endpoints**
+
+| Method | Path             | Auth                | Deskripsi                               |
+| ------ | ---------------- | ------------------- | --------------------------------------- |
+| POST   | `/auth/register` | Public              | Daftarkan akun.                         |
+| POST   | `/auth/login`    | Public              | Masuk dengan akun yang telah terdaftar. |
+| GET    | `/auth/me`       | `user` `super_user` | Mendapatkan informasi akun.             |
+
+**Body (POST /auth/register)**
+Semua field wajib diisi.
+
+- `email`: string, email
+- `password`: string, min 8, max 12
+- `firstname`: string, min 1, max 50
+- `lastname`: string, min 1, max 50
+
+**Body (POST /auth/login)**
+Semua field wajib diisi.
+
+- `email`: string, email
+- `password`: string, min 8, max 12
+
+**Contoh Request Dan Response (POST /auth/register)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/auth/register' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email" : "asepam@gmail.com",
+    "password" : "rajajaya",
+    "firstname": "Asep",
+    "lastname": "Mugni"
+}'
+```
+
+```json
+{
+  "status": 201,
+  "message": "Pendaftaran berhasil.",
+  "data": {
+    "id": "cmmsi8maw000004jjuk14uo80",
+    "email": "asepam@gmail.com",
+    "firstname": "Asep",
+    "avatar": null,
+    "lastname": "Mugni",
+    "fullname": "Asep Mugni",
+    "provider": "default",
+    "role": "user",
+    "created_at": "2026-03-16T01:28:29.672Z",
+    "updated_at": "2026-03-16T01:28:29.672Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (POST /auth/login)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/auth/login' \
+--header 'Content-Type: application/json' \
+--data-raw '{
+    "email" : "abankr342@gmail.com",
+    "password" : "mafiabeas"
+}'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Masuk berhasil, Selamat datang kembali.",
+  "data": {
+    "token": "<token>",
+    "user": {
+      "id": "cmm05007r000204i3gsbt89th",
+      "email": "abankr342@gmail.com",
+      "firstname": "Asep",
+      "avatar": null,
+      "password": null,
+      "lastname": "Abdul Mugni",
+      "fullname": "Asep Abdul Mugni",
+      "provider": "default",
+      "role": "super_user",
+      "created_at": "2026-02-24T05:00:19.863Z",
+      "updated_at": "2026-02-24T05:00:19.863Z"
+    }
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
+**Contoh Request Dan Response (GET /auth/me)**
+
+```bash
+curl --location 'https://api.v2.mugni.my.id/auth/me' \
+--header 'Authorization: Bearer <token>'
+```
+
+```json
+{
+  "status": 200,
+  "message": "Berhasil mengambil data pengguna.",
+  "data": {
+    "id": "cmm05007r000204i3gsbt89th",
+    "email": "abankr342@gmail.com",
+    "firstname": "Asep",
+    "avatar": null,
+    "lastname": "Abdul Mugni",
+    "fullname": "Asep Abdul Mugni",
+    "provider": "default",
+    "role": "super_user",
+    "created_at": "2026-02-24T05:00:19.863Z",
+    "updated_at": "2026-02-24T05:00:19.863Z"
+  },
+  "meta": null,
+  "errors": null
+}
+```
+
 **News API**
 
 Base path: `/news`
@@ -41,8 +165,7 @@ Semua field opsional, tapi jika dikirim harus sesuai validasi.
 **Contoh Request Dan Response (GET /news)**
 
 ```bash
-curl -X GET "http://localhost:5055/news?search=promo&limit=10&page=1" \
-  -H "Content-Type: application/json"
+curl --location 'https://api.v2.mugni.my.id/news'
 ```
 
 ```json
@@ -76,8 +199,7 @@ curl -X GET "http://localhost:5055/news?search=promo&limit=10&page=1" \
 **Contoh Request Dan Response (GET /news/:id)**
 
 ```bash
-curl -X GET "http://localhost:5055/news/ckxyz..." \
-  -H "Content-Type: application/json"
+curl --location 'https://api.v2.mugni.my.id/news/ckxyz...'
 ```
 
 ```json
@@ -101,15 +223,15 @@ curl -X GET "http://localhost:5055/news/ckxyz..." \
 **Contoh Request Dan Response (POST /news)**
 
 ```bash
-curl -X POST "http://localhost:5055/news" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "image_url": "https://cdn.example.com/news/1.jpg",
-    "title": "Promo Akhir Pekan",
-    "summary": "Ringkasan berita...",
-    "content": "Konten lengkap berita..."
-  }'
+curl --location 'https://api.v2.mugni.my.id/news' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "image_url": "https://testasd.com",
+    "title" : "Naik Harga",
+    "summary": "asdasasdasdasdd",
+    "content" : "Kini bla bla bla bla"
+}'
 ```
 
 ```json
@@ -117,13 +239,13 @@ curl -X POST "http://localhost:5055/news" \
   "status": 201,
   "message": "Berhasil membuat berita.",
   "data": {
-    "id": "ckxyz...",
-    "image_url": "https://cdn.example.com/news/1.jpg",
-    "title": "Promo Akhir Pekan",
-    "summary": "Ringkasan berita...",
-    "content": "Konten lengkap berita...",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "id": "cmmsin86x000104jjvsa9ousd",
+    "image_url": "https://testasd.com",
+    "title": "Naik Harga",
+    "summary": "asdasasdasdasdd",
+    "content": "Kini bla bla bla bla",
+    "created_at": "2026-03-16T01:39:51.225Z",
+    "updated_at": "2026-03-16T01:39:51.225Z"
   },
   "meta": null,
   "errors": null
@@ -133,12 +255,15 @@ curl -X POST "http://localhost:5055/news" \
 **Contoh Request Dan Response (PUT /news/:id)**
 
 ```bash
-curl -X PUT "http://localhost:5055/news/ckxyz..." \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "title": "Promo Akhir Pekan (Update)"
-  }'
+curl --location --request PUT 'https://api.v2.mugni.my.id/news/cmmsin86x000104jjvsa9ousd' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+    "image_url": "https://testasdupdate.com",
+    "title" : "Naik Harga (update)",
+    "summary": "asdasasdasdasdd (update)",
+    "content" : "Kini bla bla bla bla (update)"
+}'
 ```
 
 ```json
@@ -146,13 +271,13 @@ curl -X PUT "http://localhost:5055/news/ckxyz..." \
   "status": 200,
   "message": "Berhasil memperbarui berita.",
   "data": {
-    "id": "ckxyz...",
-    "image_url": "https://cdn.example.com/news/1.jpg",
-    "title": "Promo Akhir Pekan (Update)",
-    "summary": "Ringkasan berita...",
-    "content": "Konten lengkap berita...",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-02T10:00:00.000Z"
+    "id": "cmmsin86x000104jjvsa9ousd",
+    "image_url": "https://testasdupdate.com",
+    "title": "Naik Harga (update)",
+    "summary": "asdasasdasdasdd (update)",
+    "content": "Kini bla bla bla bla (update)",
+    "created_at": "2026-03-16T01:39:51.225Z",
+    "updated_at": "2026-03-16T01:43:16.917Z"
   },
   "meta": null,
   "errors": null
@@ -162,9 +287,8 @@ curl -X PUT "http://localhost:5055/news/ckxyz..." \
 **Contoh Request Dan Response (DELETE /news/:id)**
 
 ```bash
-curl -X DELETE "http://localhost:5055/news/ckxyz..." \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>"
+curl --location --request DELETE 'https://api.v2.mugni.my.id/news/cmmsin86x000104jjvsa9ousd' \
+--header 'Authorization: Bearer <token>'
 ```
 
 ```json
@@ -172,13 +296,13 @@ curl -X DELETE "http://localhost:5055/news/ckxyz..." \
   "status": 200,
   "message": "Berhasil menghapus berita.",
   "data": {
-    "id": "ckxyz...",
-    "image_url": "https://cdn.example.com/news/1.jpg",
-    "title": "Promo Akhir Pekan",
-    "summary": "Ringkasan berita...",
-    "content": "Konten lengkap berita...",
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "id": "cmmsin86x000104jjvsa9ousd",
+    "image_url": "https://testasdupdate.com",
+    "title": "Naik Harga (update)",
+    "summary": "asdasasdasdasdd (update)",
+    "content": "Kini bla bla bla bla (update)",
+    "created_at": "2026-03-16T01:39:51.225Z",
+    "updated_at": "2026-03-16T01:43:16.917Z"
   },
   "meta": null,
   "errors": null
