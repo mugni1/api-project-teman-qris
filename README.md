@@ -791,8 +791,7 @@ Semua field opsional, tapi jika dikirim harus sesuai validasi.
 **Contoh Response (GET /carousel)**
 
 ```bash
-curl -X GET "http://localhost:5055/carousel?search=promo&limit=10&page=1" \
-  -H "Content-Type: application/json"
+curl --location 'https://api.v2.mugni.my.id/carousel?search=&limit=1&page=1&order_by=id&sort_by=desc'
 ```
 
 ```json
@@ -801,24 +800,24 @@ curl -X GET "http://localhost:5055/carousel?search=promo&limit=10&page=1" \
   "message": "Berhasil mengambil data carousel.",
   "data": [
     {
-      "id": "ckxyz...",
-      "title": "Promo Akhir Pekan",
-      "description": "Deskripsi singkat carousel...",
-      "image_url": "https://cdn.example.com/carousel/1.jpg",
-      "link": "https://example.com/promo",
+      "id": "cmmg9dipg000004jolryt97px",
+      "title": "Promo Ramadhann",
+      "description": "lorem ipsum dolor sit amet",
+      "image_url": "https://ik.imagekit.io/8fifwnm7r/uploads/selamat-menunaikan-ibadah-puasa-1447h-314074_d70p3pDu_.webp",
+      "link": "http://example.com/link/to/document",
       "is_active": true,
-      "created_at": "2024-01-01T10:00:00.000Z",
-      "updated_at": "2024-01-01T10:00:00.000Z"
+      "created_at": "2026-03-07T11:47:07.636Z",
+      "updated_at": "2026-03-07T11:51:45.667Z"
     }
   ],
   "meta": {
-    "search": "promo",
+    "search": "",
+    "limit": 1,
     "page": 1,
-    "limit": 10,
     "offset": 0,
-    "total": 1,
-    "order_by": "created_at",
-    "sort_by": "desc"
+    "order_by": "id",
+    "sort_by": "desc",
+    "total": 2
   },
   "errors": null
 }
@@ -827,16 +826,16 @@ curl -X GET "http://localhost:5055/carousel?search=promo&limit=10&page=1" \
 **Contoh Response (POST /carousel)**
 
 ```bash
-curl -X POST "http://localhost:5055/carousel" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "title": "Promo Akhir Pekan",
-    "description": "Deskripsi singkat carousel...",
-    "image_url": "https://cdn.example.com/carousel/1.jpg",
-    "link": "https://example.com/promo",
-    "is_active": true
-  }'
+curl --location 'https://api.v2.mugni.my.id/carousel' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+   "title": "ini judul",
+   "description" : "asdasdasdasdas",
+   "image_url": "asdasda.com",
+   "link": "/",
+   "is_active": true
+}'
 ```
 
 ```json
@@ -844,14 +843,14 @@ curl -X POST "http://localhost:5055/carousel" \
   "status": 201,
   "message": "Berhasil membuat carousel.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Promo Akhir Pekan",
-    "description": "Deskripsi singkat carousel...",
-    "image_url": "https://cdn.example.com/carousel/1.jpg",
-    "link": "https://example.com/promo",
+    "id": "cmmsk48a5000004l8uue2znqd",
+    "title": "ini judul",
+    "description": "asdasdasdasdas",
+    "image_url": "asdasda.com",
+    "link": "/",
     "is_active": true,
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "created_at": "2026-03-16T02:21:04.109Z",
+    "updated_at": "2026-03-16T02:21:04.109Z"
   },
   "meta": null,
   "errors": null
@@ -861,13 +860,16 @@ curl -X POST "http://localhost:5055/carousel" \
 **Contoh Response (PUT /carousel/:id)**
 
 ```bash
-curl -X PUT "http://localhost:5055/carousel/ckxyz..." \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>" \
-  -d '{
-    "title": "Promo Akhir Pekan (Update)",
-    "is_active": false
-  }'
+curl --location --request PUT 'https://api.v2.mugni.my.id/carousel/cmmsk48a5000004l8uue2znqd' \
+--header 'Content-Type: application/json' \
+--header 'Authorization: Bearer <token>' \
+--data '{
+   "title": "ini judul (update)",
+   "description" : "asdasdasdasdas (update)",
+   "image_url": "asdasda.com (update)",
+   "link": "/update",
+   "is_active": false
+}'
 ```
 
 ```json
@@ -875,14 +877,14 @@ curl -X PUT "http://localhost:5055/carousel/ckxyz..." \
   "status": 200,
   "message": "Berhasil memperbarui carousel.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Promo Akhir Pekan (Update)",
-    "description": "Deskripsi singkat carousel...",
-    "image_url": "https://cdn.example.com/carousel/1.jpg",
-    "link": "https://example.com/promo",
+    "id": "cmmsk48a5000004l8uue2znqd",
+    "title": "ini judul (update)",
+    "description": "asdasdasdasdas (update)",
+    "image_url": "asdasda.com (update)",
+    "link": "/update",
     "is_active": false,
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-02T10:00:00.000Z"
+    "created_at": "2026-03-16T02:21:04.109Z",
+    "updated_at": "2026-03-16T02:21:53.666Z"
   },
   "meta": null,
   "errors": null
@@ -892,9 +894,8 @@ curl -X PUT "http://localhost:5055/carousel/ckxyz..." \
 **Contoh Response (DELETE /carousel/:id)**
 
 ```bash
-curl -X DELETE "http://localhost:5055/carousel/ckxyz..." \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer <token>"
+curl --location --request DELETE 'https://api.v2.mugni.my.id/carousel/cmmsk48a5000004l8uue2znqd' \
+--header 'Authorization: Bearer <token>'
 ```
 
 ```json
@@ -902,14 +903,14 @@ curl -X DELETE "http://localhost:5055/carousel/ckxyz..." \
   "status": 200,
   "message": "Berhasil menghapus carousel.",
   "data": {
-    "id": "ckxyz...",
-    "title": "Promo Akhir Pekan",
-    "description": "Deskripsi singkat carousel...",
-    "image_url": "https://cdn.example.com/carousel/1.jpg",
-    "link": "https://example.com/promo",
-    "is_active": true,
-    "created_at": "2024-01-01T10:00:00.000Z",
-    "updated_at": "2024-01-01T10:00:00.000Z"
+    "id": "cmmsk48a5000004l8uue2znqd",
+    "title": "ini judul (update)",
+    "description": "asdasdasdasdas (update)",
+    "image_url": "asdasda.com (update)",
+    "link": "/update",
+    "is_active": false,
+    "created_at": "2026-03-16T02:21:04.109Z",
+    "updated_at": "2026-03-16T02:21:53.666Z"
   },
   "meta": null,
   "errors": null
@@ -1093,7 +1094,7 @@ curl --location 'https://api.v2.mugni.my.id/order' \
 }
 ```
 
-**Contoh Request Dan Response (POST /order)**
+**Contoh Request Dan Response (PUT /order)**
 
 ```bash
 curl --location --request PUT 'https://api.v2.mugni.my.id/order/MUGN-260316-891C65EA' \
