@@ -12,7 +12,7 @@ import {
 import { loginSchema, registerSchema } from '../schema/auth.schema.js'
 import { comparePassword, hashedPassword } from '../utils/bcrypt.js'
 import { generateToken } from '../utils/jwt.js'
-import { authClient, authGoogleUrl } from '../libs/oauth.js'
+import { authClient } from '../libs/oauth.js'
 import { google } from 'googleapis'
 
 export const me = async (req: Request, res: Response) => {
@@ -97,11 +97,19 @@ export const loginController = async (req: Request, res: Response) => {
 }
 
 export const googleRedirect = (req: Request, res: Response) => {
-  res.redirect(authGoogleUrl)
+  const redirectUrl = req.query.redirect as string
+  const url = authClient.generateAuthUrl({
+    access_type: 'offline',
+    scope: ['profile', 'email'],
+    state: redirectUrl,
+  })
+  res.redirect(url)
 }
 
 export const googleCallback = async (req: Request, res: Response) => {
   const code = req.query.code as string
+  const redirectUrl = req.query.state as string
+  const FRONTEND_URL = redirectUrl || process.env.FE_ORIGIN_URL
   try {
     // set credentials
     const { tokens } = await authClient.getToken(code)
@@ -119,7 +127,7 @@ export const googleCallback = async (req: Request, res: Response) => {
       const existUser = await getUserByEmailService(userInfo.email as string)
       if (existUser) {
         if (existUser.provider != 'google') {
-          return res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Akun_sudah_terdaftar`)
+          return res.redirect(`${FRONTEND_URL}/login?message=Akun_sudah_terdaftar`)
         } else {
           const token = generateToken({
             id: existUser.id,
@@ -130,7 +138,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             fullname: existUser.fullname || '',
           })
           const hashToken = btoa(token)
-          return res.redirect(`${process.env.FE_ORIGIN_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
+          return res.redirect(`${FRONTEND_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
         }
       }
       const registered = await registerAuthGoogleService(
@@ -151,11 +159,11 @@ export const googleCallback = async (req: Request, res: Response) => {
         fullname: registered.fullname || '',
       })
       const hashToken = btoa(token)
-      return res.redirect(`${process.env.FE_ORIGIN_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
+      return res.redirect(`${FRONTEND_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
     } else {
-      res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Coba_lagi_nanti`)
+      res.redirect(`${FRONTEND_URL}/login?message=Coba_lagi_nanti`)
     }
   } catch {
-    res.redirect(`${process.env.FE_ORIGIN_URL}/login?message=Coba_lagi_nanti`)
+    res.redirect(`${FRONTEND_URL}/login?message=Coba_lagi_nanti`)
   }
 }
