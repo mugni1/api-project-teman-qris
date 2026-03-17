@@ -138,7 +138,7 @@ export const googleCallback = async (req: Request, res: Response) => {
             fullname: existUser.fullname || '',
           })
           const hashToken = btoa(token)
-          return res.redirect(`${FRONTEND_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
+          return res.redirect(`${FRONTEND_URL}/redirect?message=Berhasil_masuk&role=${existUser.role}&bb=${hashToken}`)
         }
       }
       const registered = await registerAuthGoogleService(
@@ -159,7 +159,7 @@ export const googleCallback = async (req: Request, res: Response) => {
         fullname: registered.fullname || '',
       })
       const hashToken = btoa(token)
-      return res.redirect(`${FRONTEND_URL}/redirect?message=Berhasil_masuk&bb=${hashToken}`)
+      return res.redirect(`${FRONTEND_URL}/redirect?message=Berhasil_masuk&role=${registered.role}&bb=${hashToken}`)
     } else {
       res.redirect(`${FRONTEND_URL}/login?message=Coba_lagi_nanti`)
     }
